@@ -9,20 +9,23 @@ import {
   orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* =========================
-   1) حماية النسخ وزر اليمين
-   نفعّلها أولًا حتى لا تتأثر لو حصل خطأ لاحق
-========================= */
+/* =========================================================
+   1) الحماية من النسخ وزر اليمين
+   يتم تشغيلها أولًا حتى تعمل حتى لو حدث خطأ لاحقًا
+========================================================= */
 (function activateProtection() {
+  // منع زر الفأرة اليمين
   document.addEventListener("contextmenu", (e) => {
     e.preventDefault();
     return false;
   });
 
+  // منع سحب العناصر
   document.addEventListener("dragstart", (e) => {
     e.preventDefault();
   });
 
+  // منع النسخ والقص
   document.addEventListener("copy", (e) => {
     e.preventDefault();
   });
@@ -31,11 +34,13 @@ import {
     e.preventDefault();
   });
 
+  // منع تحديد النص خارج الحقول
   document.addEventListener("selectstart", (e) => {
     const allowed = e.target.closest("input, textarea");
     if (!allowed) e.preventDefault();
   });
 
+  // منع الضغط المطول في الجوال
   let pressTimer = null;
 
   document.addEventListener(
@@ -61,22 +66,26 @@ import {
     );
   });
 
+  // محاولات بسيطة لتعطيل بعض اختصارات الفحص
   document.addEventListener("keydown", (e) => {
     if (e.key === "F12") {
       e.preventDefault();
     }
+
     if (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key.toUpperCase())) {
       e.preventDefault();
     }
+
     if (e.ctrlKey && e.key.toUpperCase() === "U") {
       e.preventDefault();
     }
   });
 })();
 
-/* =========================
-   2) Firebase
-========================= */
+/* =========================================================
+   2) إعداد Firebase
+   ضع بيانات مشروعك هنا
+========================================================= */
 const firebaseConfig = {
   apiKey: "PUT_YOUR_API_KEY",
   authDomain: "PUT_YOUR_AUTH_DOMAIN",
@@ -89,9 +98,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* =========================
-   3) Elements
-========================= */
+/* =========================================================
+   3) التقاط عناصر الصفحة
+========================================================= */
 const els = {
   restaurantName: document.getElementById("restaurantName"),
   restaurantSubtitle: document.getElementById("restaurantSubtitle"),
@@ -125,14 +134,12 @@ const els = {
   modalPrice: document.getElementById("modalPrice"),
   modalDescription: document.getElementById("modalDescription"),
   modalIngredients: document.getElementById("modalIngredients"),
-  orderWhatsappBtn: document.getElementById("orderWhatsappBtn"),
-
-  yearNow: document.getElementById("yearNow")
+  orderWhatsappBtn: document.getElementById("orderWhatsappBtn")
 };
 
-/* =========================
-   4) State
-========================= */
+/* =========================================================
+   4) متغيرات الحالة
+========================================================= */
 let settings = null;
 let categories = [];
 let meals = [];
@@ -141,17 +148,18 @@ let activeCategory = "all";
 let sliderIndex = 0;
 let sliderTimer = null;
 
-/* =========================
+/* =========================================================
    5) بيانات احتياطية
-========================= */
+   تظهر إذا لم تكن قاعدة البيانات جاهزة بعد
+========================================================= */
 const FALLBACK_SETTINGS = {
   restaurantName: "فطاير ع طاير",
   subtitle: "للمعجنات والبيتزا",
   heroTitle: "جرّبونا لتعرفونا",
   heroDescription:
     "أشهى المعجنات والبيتزا والعروض اليومية، بطابع سريع وجذاب مع إمكانية الطلب المباشر عبر واتساب.",
-  phone: "0983906667",
-  whatsapp: "https://wa.me/0983906667",
+  phone: "+963983906667",
+  whatsapp: "https://wa.me/963983906667",
   instagram: "#",
   facebook: "#",
   maps: "#",
@@ -215,13 +223,11 @@ const FALLBACK_OFFERS = [
   }
 ];
 
-/* =========================
-   6) Helpers
-========================= */
-if (els.yearNow) {
-  els.yearNow.textContent = new Date().getFullYear();
-}
+/* =========================================================
+   6) دوال مساعدة
+========================================================= */
 
+// إغلاق وفتح نافذة التفاصيل
 function openPanel(id) {
   const panel = document.getElementById(id);
   if (!panel) return;
@@ -233,26 +239,59 @@ function closePanel(id) {
   const panel = document.getElementById(id);
   if (!panel) return;
   panel.classList.remove("show");
-
-  const anyOpen = document.querySelector(".modal.show");
-  if (!anyOpen) {
-    document.body.style.overflow = "";
-  }
+  document.body.style.overflow = "";
 }
 
+// تنسيق السعر
 function formatPrice(price) {
   return `${Number(price || 0).toFixed(2)} €`;
 }
 
+// جلب اسم القسم من المعرّف
 function getCategoryName(categoryId) {
   return categories.find((c) => c.id === categoryId)?.name || "قسم غير معروف";
 }
 
-function phoneFromSettings() {
-  const raw = settings?.phone || settings?.whatsapp || "";
-  return String(raw).replace(/\D/g, "");
+/*
+  تحويل رقم الهاتف إلى صيغة مناسبة لواتساب
+  مثال:
+  0983906667 -> 963983906667
+  +963983906667 -> 963983906667
+*/
+function normalizeSyrianWhatsappNumber(rawValue) {
+  if (!rawValue) return "";
+
+  let value = String(rawValue).trim();
+
+  // إزالة كل شيء غير الأرقام أو +
+  value = value.replace(/[^\d+]/g, "");
+
+  // إذا الرابط كامل واتساب
+  if (value.includes("wa.me")) {
+    value = value.replace(/\D/g, "");
+    return value;
+  }
+
+  // إذا يبدأ بـ +963
+  if (value.startsWith("+963")) {
+    return value.replace(/\D/g, "");
+  }
+
+  // إذا يبدأ بـ 963
+  if (value.startsWith("963")) {
+    return value.replace(/\D/g, "");
+  }
+
+  // إذا يبدأ بـ 0 محلي
+  if (value.startsWith("0")) {
+    return `963${value.slice(1)}`;
+  }
+
+  // إذا مجرد رقم بدون صفر
+  return value.replace(/\D/g, "");
 }
 
+// تجهيز رسالة الطلب
 function buildWhatsappMessage(meal) {
   const categoryName = getCategoryName(meal.categoryId);
   const ingredientsText =
@@ -271,17 +310,19 @@ function buildWhatsappMessage(meal) {
   ].join("\n");
 }
 
-/* =========================
-   7) Global Events
-========================= */
+/* =========================================================
+   7) أحداث عامة
+========================================================= */
+
+// إغلاق النافذة عند الضغط على الخلفية أو زر الإغلاق
 document.addEventListener("click", (e) => {
   const closeId = e.target.getAttribute("data-close");
   if (closeId) closePanel(closeId);
 });
 
-/* =========================
-   8) Apply settings to UI
-========================= */
+/* =========================================================
+   8) تطبيق إعدادات المطعم على الواجهة
+========================================================= */
 function applySettingsToUI(data) {
   const s = data || FALLBACK_SETTINGS;
 
@@ -293,31 +334,52 @@ function applySettingsToUI(data) {
       s.heroDescription ||
       "أشهى المعجنات والبيتزا والعروض اليومية، بطابع سريع وجذاب مع إمكانية الطلب المباشر عبر واتساب.";
   }
-  if (els.footerName) els.footerName.textContent = s.restaurantName || "فطاير ع طاير";
-  if (els.displayPhone) els.displayPhone.textContent = `📞 ${s.phone || "0983906667"}`;
+
+  if (els.displayPhone) {
+    els.displayPhone.textContent = `📞 ${s.phone || "+963983906667"}`;
+  }
 
   if (els.restaurantLogo) {
     els.restaurantLogo.src = s.logoUrl || FALLBACK_SETTINGS.logoUrl;
   }
+
   if (els.heroBanner) {
     els.heroBanner.src = s.bannerUrl || FALLBACK_SETTINGS.bannerUrl;
   }
 
+  /*
+    هنا توضع روابط التواصل الاجتماعي
+    هذه القيم تأتي من settings/main في Firestore
+  */
   const whatsappUrl = s.whatsapp || "#";
   const instagramUrl = s.instagram || "#";
   const facebookUrl = s.facebook || "#";
   const mapsUrl = s.maps || "#";
 
-  if (els.whatsappBtn) els.whatsappBtn.href = whatsappUrl;
-  if (els.instagramBtn) els.instagramBtn.href = instagramUrl;
-  if (els.facebookBtn) els.facebookBtn.href = facebookUrl;
-  if (els.mapsBtn) els.mapsBtn.href = mapsUrl;
-  if (els.mapsInlineBtn) els.mapsInlineBtn.href = mapsUrl;
+  if (els.whatsappBtn) {
+    els.whatsappBtn.href = whatsappUrl;
+  }
+
+  if (els.instagramBtn) {
+    els.instagramBtn.href = instagramUrl;
+  }
+
+  if (els.facebookBtn) {
+    els.facebookBtn.href = facebookUrl;
+  }
+
+  if (els.mapsBtn) {
+    els.mapsBtn.href = mapsUrl;
+  }
+
+  if (els.mapsInlineBtn) {
+    els.mapsInlineBtn.href = mapsUrl;
+  }
 }
 
-/* =========================
-   9) Categories
-========================= */
+/* =========================================================
+   9) الفئات السريعة
+========================================================= */
 function renderQuickCategories() {
   if (!els.quickCategories) return;
 
@@ -348,9 +410,9 @@ function bindCategoryChipEvents() {
   });
 }
 
-/* =========================
-   10) Meals
-========================= */
+/* =========================================================
+   10) بطاقات الوجبات
+========================================================= */
 function buildMealCard(meal) {
   const ingredients = Array.isArray(meal.ingredients) ? meal.ingredients.slice(0, 3) : [];
   const image =
@@ -365,7 +427,9 @@ function buildMealCard(meal) {
           <h3 class="meal-name">${meal.name}</h3>
           <div class="meal-price">${formatPrice(meal.price)}</div>
         </div>
+
         <p class="meal-desc">${meal.description || ""}</p>
+
         <div class="tags">
           <span class="tag">${getCategoryName(meal.categoryId)}</span>
           ${ingredients.map((item) => `<span class="tag">${item}</span>`).join("")}
@@ -376,6 +440,7 @@ function buildMealCard(meal) {
   `;
 }
 
+// فلترة الوجبات حسب البحث والقسم والترتيب
 function getFilteredMeals() {
   const search = els.searchInput?.value.trim().toLowerCase() || "";
   const sort = els.sortFilter?.value || "default";
@@ -393,6 +458,7 @@ function getFilteredMeals() {
       .toLowerCase();
 
     const matchesSearch = !search || haystack.includes(search);
+
     return matchesCategory && matchesSearch;
   });
 
@@ -403,6 +469,7 @@ function getFilteredMeals() {
   return filtered;
 }
 
+// عرض الوجبات داخل الصفحة
 function renderMeals() {
   if (!els.menuGroups || !els.menuCounter) return;
 
@@ -438,6 +505,7 @@ function renderMeals() {
           <h3 class="category-title">${group.name}</h3>
           <p class="category-note">${group.meals.length} وجبة ضمن هذا القسم</p>
         </div>
+
         <div class="meals-grid">
           ${group.meals.map(buildMealCard).join("")}
         </div>
@@ -447,12 +515,16 @@ function renderMeals() {
     .join("");
 }
 
+/* =========================================================
+   11) نافذة تفاصيل الوجبة + زر الطلب
+========================================================= */
 function openMealModal(meal) {
   if (!els.modalImage) return;
 
   els.modalImage.src =
     meal.imageUrl ||
     "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop";
+
   els.modalCategory.textContent = getCategoryName(meal.categoryId);
   els.modalName.textContent = meal.name;
   els.modalPrice.textContent = formatPrice(meal.price);
@@ -463,8 +535,10 @@ function openMealModal(meal) {
       ? meal.ingredients.map((item) => `<span class="tag">${item}</span>`).join("")
       : `<span class="tag">لا توجد مكونات محددة</span>`;
 
+  // ربط زر واتساب بالطلب التلقائي
   if (els.orderWhatsappBtn) {
-    const phone = phoneFromSettings();
+    const rawPhone = settings?.phone || settings?.whatsapp || FALLBACK_SETTINGS.phone;
+    const phone = normalizeSyrianWhatsappNumber(rawPhone);
     const message = buildWhatsappMessage(meal);
 
     els.orderWhatsappBtn.onclick = () => {
@@ -481,6 +555,7 @@ function openMealModal(meal) {
   openPanel("mealModal");
 }
 
+// عند الضغط على أي بطاقة وجبة
 function bindMealEvents() {
   document.addEventListener("click", (e) => {
     const card = e.target.closest(".meal-card");
@@ -491,9 +566,9 @@ function bindMealEvents() {
   });
 }
 
-/* =========================
-   11) Offers slider
-========================= */
+/* =========================================================
+   12) سلايدر العروض
+========================================================= */
 function renderOffers() {
   if (!els.offersTrack || !els.offersDots) return;
 
@@ -551,6 +626,7 @@ function moveSlider(index, animate = true) {
 
 function startSlider() {
   clearInterval(sliderTimer);
+
   if (offers.length <= 1) return;
 
   sliderTimer = setInterval(() => {
@@ -568,9 +644,11 @@ function bindSliderDots() {
   });
 }
 
-/* =========================
-   12) Load data
-========================= */
+/* =========================================================
+   13) جلب البيانات من Firestore
+========================================================= */
+
+// إعدادات المطعم
 async function loadSettings() {
   try {
     const snap = await getDoc(doc(db, "settings", "main"));
@@ -582,10 +660,12 @@ async function loadSettings() {
   applySettingsToUI(settings);
 }
 
+// الأقسام
 async function loadCategories() {
   try {
     const snap = await getDocs(query(collection(db, "categories"), orderBy("order", "asc")));
     categories = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
     if (!categories.length) categories = [...FALLBACK_CATEGORIES];
   } catch {
     categories = [...FALLBACK_CATEGORIES];
@@ -594,10 +674,12 @@ async function loadCategories() {
   renderQuickCategories();
 }
 
+// العروض
 async function loadOffers() {
   try {
     const snap = await getDocs(query(collection(db, "offers"), orderBy("createdAt", "desc")));
     offers = snap.docs.map((d) => ({ id: d.id, ...d.data() })).reverse();
+
     if (!offers.length) offers = [...FALLBACK_OFFERS];
   } catch {
     offers = [...FALLBACK_OFFERS];
@@ -606,10 +688,12 @@ async function loadOffers() {
   renderOffers();
 }
 
+// الوجبات
 async function loadMeals() {
   try {
     const snap = await getDocs(query(collection(db, "meals"), orderBy("createdAt", "desc")));
     meals = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
     if (!meals.length) meals = [...FALLBACK_MEALS];
   } catch {
     meals = [...FALLBACK_MEALS];
@@ -618,6 +702,7 @@ async function loadMeals() {
   renderMeals();
 }
 
+// بدء تحميل كل شيء
 async function init() {
   await loadSettings();
   await loadCategories();
@@ -625,9 +710,9 @@ async function init() {
   await loadMeals();
 }
 
-/* =========================
-   13) Search + sort
-========================= */
+/* =========================================================
+   14) البحث والترتيب
+========================================================= */
 if (els.searchInput) {
   els.searchInput.addEventListener("input", renderMeals);
 }
@@ -636,9 +721,9 @@ if (els.sortFilter) {
   els.sortFilter.addEventListener("change", renderMeals);
 }
 
-/* =========================
-   14) Start
-========================= */
+/* =========================================================
+   15) تشغيل الصفحة
+========================================================= */
 bindCategoryChipEvents();
 bindMealEvents();
 bindSliderDots();
