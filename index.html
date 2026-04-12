@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>فطاير ع طاير | قائمة الطعام</title>
-  <meta name="description" content="قائمة طعام رقمية للمطعم مع العروض والطلب عبر واتساب" />
+  <title>فطاير ع طاير | المعجنات والبيتزا</title>
+  <meta
+    name="description"
+    content="قائمة طعام رقمية لمطعم فطاير ع طاير، مع عروض، فئات، وبطاقات تفاصيل لكل وجبة مع طلب مباشر عبر واتساب."
+  />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -14,12 +17,12 @@
         <img
           id="restaurantLogo"
           class="brand-logo"
-          src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1541544181051-e46607c3a54b?q=80&w=600&auto=format&fit=crop"
           alt="شعار المطعم"
         />
         <div>
           <h1 id="restaurantName">فطاير ع طاير</h1>
-          <p id="restaurantSubtitle">للمعجنات والبيتزا — جرّبونا لتعرفونا</p>
+          <p id="restaurantSubtitle">للمعجنات والبيتزا</p>
         </div>
       </div>
     </div>
@@ -29,40 +32,34 @@
     <section class="hero">
       <div class="container">
         <div class="hero-card">
-          <div class="hero-decoration hero-decoration-right"></div>
-          <div class="hero-decoration hero-decoration-left"></div>
+          <div class="hero-decor hero-decor-top-right"></div>
+          <div class="hero-decor hero-decor-bottom-left"></div>
 
           <div class="hero-head">
             <div class="hero-content">
-              <div class="hero-badge">توصيل سريع • جودة طازجة</div>
-              <h2 class="hero-title" id="heroTitle">قائمة الأصناف</h2>
+              <span class="hero-badge">جرّبونا لتعرفونا</span>
+              <h2 class="hero-title" id="heroTitle">أشهى المعجنات والبيتزا</h2>
               <p class="hero-desc" id="heroDescription">
-                تصفح المعجنات والبيتزا والعروض، وافتح أي وجبة لرؤية الصورة والتفاصيل والمكونات مع إمكانية الطلب المباشر عبر واتساب.
+                تصفّح الأصناف بسهولة، وافتح تفاصيل كل وجبة، واطلب مباشرة عبر واتساب برسالة جاهزة.
               </p>
 
-              <div class="store-meta">
-                <div class="meta-item">
-                  <span class="meta-icon">📞</span>
-                  <span id="storePhoneText">0983906667</span>
-                </div>
-                <div class="meta-item">
-                  <span class="meta-icon">📍</span>
-                  <span id="storeLocationText">إدارة: أبو سامر</span>
-                </div>
+              <div class="contact-line">
+                <span class="contact-chip" id="displayPhone">📞 0983906667</span>
+                <a class="contact-chip" id="mapsInlineBtn" href="#" target="_blank" rel="noopener">📍 الموقع على الخرائط</a>
               </div>
             </div>
 
-            <div class="hero-visual">
+            <div class="hero-image-wrap">
               <img
                 id="heroBanner"
                 class="hero-banner"
-                src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop"
                 alt="صورة المطعم"
               />
             </div>
           </div>
 
-          <div class="search-wrap single-search">
+          <div class="search-wrap">
             <input
               id="searchInput"
               class="field"
@@ -83,7 +80,7 @@
         <div class="section-head">
           <div>
             <h2>العروض الحالية</h2>
-            <p>أفضل العروض اليومية والعائلية</p>
+            <p>عروض مميزة وأسعار مناسبة</p>
           </div>
 
           <select id="sortFilter" class="select small-select">
@@ -117,27 +114,16 @@
 
   <div class="floating-socials">
     <a id="whatsappBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="واتساب">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M20.52 3.48A11.86 11.86 0 0 0 12.07 0C5.46 0 .08 5.38.08 12c0 2.11.55 4.18 1.59 6.01L0 24l6.17-1.62A11.9 11.9 0 0 0 12.07 24h.01c6.61 0 11.99-5.38 11.99-12 0-3.2-1.25-6.21-3.55-8.52ZM12.08 21.89h-.01a9.84 9.84 0 0 1-5.02-1.38l-.36-.21-3.66.96.98-3.57-.23-.37A9.83 9.83 0 0 1 2.21 12c0-5.44 4.43-9.87 9.88-9.87 2.64 0 5.12 1.03 6.98 2.89A9.8 9.8 0 0 1 21.95 12c0 5.44-4.43 9.89-9.87 9.89Zm5.41-7.4c-.3-.15-1.77-.87-2.05-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.95 1.16-.17.2-.35.23-.65.08-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.77-1.64-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.08-.8.38-.27.3-1.05 1.03-1.05 2.52 0 1.49 1.08 2.93 1.23 3.14.15.2 2.12 3.24 5.14 4.54.72.31 1.28.5 1.72.64.72.23 1.37.2 1.88.12.57-.08 1.77-.72 2.02-1.41.25-.7.25-1.29.17-1.42-.07-.12-.27-.2-.57-.35Z"/>
-      </svg>
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="واتساب" />
     </a>
-
     <a id="instagramBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="إنستغرام">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7Zm0 2h10c1.65 0 3 1.35 3 3v10c0 1.65-1.35 3-3 3H7c-1.65 0-3-1.35-3-3V7c0-1.65 1.35-3 3-3Zm11.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z"/>
-      </svg>
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="إنستغرام" />
     </a>
-
     <a id="facebookBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="فيسبوك">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.87.24-1.46 1.49-1.46H16.7V5.02c-.31-.04-1.38-.12-2.62-.12-2.59 0-4.36 1.58-4.36 4.48V11H7v3h2.72v8h3.78Z"/>
-      </svg>
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="فيسبوك" />
     </a>
-
     <a id="mapsBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="خرائط جوجل">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z"/>
-      </svg>
+      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="خرائط" />
     </a>
   </div>
 
@@ -151,7 +137,7 @@
     <div class="overlay" data-close="mealModal"></div>
 
     <div class="modal-card">
-      <button class="close-btn" data-close="mealModal" aria-label="إغلاق">×</button>
+      <button class="close-btn" data-close="mealModal">×</button>
 
       <div class="modal-grid">
         <img id="modalImage" src="" alt="صورة الوجبة" />
@@ -167,120 +153,10 @@
             <div class="ingredients-list" id="modalIngredients"></div>
           </div>
 
-          <div class="modal-actions">
-            <button id="orderWhatsappBtn" class="btn btn-primary">اطلب عبر واتساب</button>
-          </div>
+          <button id="orderWhatsappBtn" class="btn btn-primary">
+            اطلب عبر واتساب
+          </button>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- لوحة الإدارة مخفية عن الزبون -->
-  <div class="admin-panel" id="adminPanel">
-    <div class="overlay" data-close="adminPanel"></div>
-
-    <div class="admin-sheet">
-      <div class="panel-top">
-        <h2>لوحة إدارة المطعم</h2>
-        <button class="btn btn-secondary" data-close="adminPanel">إغلاق</button>
-      </div>
-
-      <div id="statusBox" class="status"></div>
-
-      <section class="admin-section">
-        <h3>تسجيل دخول المدير</h3>
-        <div class="grid-2">
-          <input id="adminEmail" class="field" type="email" placeholder="البريد الإلكتروني" />
-          <input id="adminPassword" class="field" type="password" placeholder="كلمة المرور" />
-        </div>
-
-        <div class="btn-row mt12">
-          <button id="loginBtn" class="btn btn-primary">دخول</button>
-          <button id="logoutBtn" class="btn btn-secondary hidden">تسجيل خروج</button>
-        </div>
-      </section>
-
-      <div id="adminContent" class="hidden">
-        <section class="admin-section">
-          <h3>إعدادات المطعم</h3>
-          <div class="grid-2">
-            <input id="settingRestaurantName" class="field" type="text" placeholder="اسم المطعم" />
-            <input id="settingSubtitle" class="field" type="text" placeholder="وصف قصير" />
-            <input id="settingLogoUrl" class="field" type="url" placeholder="رابط الشعار" />
-            <input id="settingBannerUrl" class="field" type="url" placeholder="رابط صورة البانر" />
-            <input id="settingWhatsapp" class="field" type="text" placeholder="رقم واتساب مثل 963983906667" />
-            <input id="settingInstagram" class="field" type="url" placeholder="رابط إنستغرام" />
-            <input id="settingFacebook" class="field" type="url" placeholder="رابط فيسبوك" />
-            <input id="settingMaps" class="field" type="url" placeholder="رابط خرائط جوجل" />
-            <input id="settingPhoneText" class="field" type="text" placeholder="النص الظاهر للهاتف" />
-            <input id="settingLocationText" class="field" type="text" placeholder="النص الظاهر للموقع أو الإدارة" />
-          </div>
-
-          <div class="btn-row mt12">
-            <button id="saveSettingsBtn" class="btn btn-primary">حفظ الإعدادات</button>
-          </div>
-        </section>
-
-        <section class="admin-section">
-          <h3>إضافة قسم جديد</h3>
-          <div class="grid-2">
-            <input id="categoryNameInput" class="field" type="text" placeholder="اسم القسم مثل: معجنات" />
-            <input id="categoryOrderInput" class="field" type="number" placeholder="ترتيب القسم" />
-          </div>
-
-          <div class="btn-row mt12">
-            <button id="addCategoryBtn" class="btn btn-primary">إضافة القسم</button>
-          </div>
-
-          <div id="categoriesAdminList" class="admin-list mt14"></div>
-        </section>
-
-        <section class="admin-section">
-          <h3>إضافة عرض إلى السلايدر</h3>
-          <div class="grid-2">
-            <input id="offerTitleInput" class="field" type="text" placeholder="عنوان العرض" />
-            <input id="offerBadgeInput" class="field" type="text" placeholder="مثال: عرض خاص" />
-            <textarea id="offerDescriptionInput" class="textarea" placeholder="وصف العرض"></textarea>
-            <input id="offerImageInput" class="file-input" type="file" accept="image/*" />
-          </div>
-
-          <div class="btn-row mt12">
-            <button id="addOfferBtn" class="btn btn-primary">رفع العرض</button>
-          </div>
-
-          <div id="offersAdminList" class="admin-list mt14"></div>
-        </section>
-
-        <section class="admin-section">
-          <h3>إضافة وجبة جديدة</h3>
-          <div class="grid-3">
-            <input id="mealNameInput" class="field" type="text" placeholder="اسم الوجبة" />
-            <input id="mealPriceInput" class="field" type="number" step="0.01" placeholder="السعر" />
-            <select id="mealCategoryInput" class="select"></select>
-          </div>
-
-          <div class="grid-2 mt12">
-            <textarea id="mealDescriptionInput" class="textarea" placeholder="تفاصيل الوجبة"></textarea>
-            <textarea id="mealIngredientsInput" class="textarea" placeholder="المكونات، وافصل بينها بفاصلة مثل: جبنة، زعتر، زيتون"></textarea>
-          </div>
-
-          <div class="grid-2 mt12">
-            <input id="mealImageInput" class="file-input" type="file" accept="image/*" />
-            <select id="mealAvailabilityInput" class="select">
-              <option value="true">متوفر</option>
-              <option value="false">غير متوفر</option>
-            </select>
-          </div>
-
-          <div class="btn-row mt12">
-            <button id="addMealBtn" class="btn btn-primary">رفع الوجبة</button>
-          </div>
-        </section>
-
-        <section class="admin-section">
-          <h3>إدارة الوجبات الحالية</h3>
-          <div id="mealsAdminList" class="admin-list"></div>
-        </section>
       </div>
     </div>
   </div>
