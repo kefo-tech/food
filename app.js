@@ -158,13 +158,13 @@ const FALLBACK_SETTINGS = {
   heroTitle: "جرّبونا لتعرفونا",
   heroDescription:
     "أشهى المعجنات والبيتزا والعروض اليومية، بطابع سريع وجذاب مع إمكانية الطلب المباشر عبر واتساب.",
-  phone: "+963983906667",
+  phone: "0983906667",
   whatsapp: "https://wa.me/963983906667",
   instagram: "#",
   facebook: "#",
   maps: "#",
-  logoUrl: "https://images.unsplash.com/photo-1541544181051-e46607c3a54b?q=80&w=600&auto=format&fit=crop",
-  bannerUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop"
+  logoUrl: "https://png.pngtree.com/png-vector/20250104/ourmid/pngtree-a-chef-holding-hamburger-and-fries-png-image_15048996.png",
+  bannerUrl: "https://t4.ftcdn.net/jpg/09/71/88/41/360_F_971884190_2SY8nyIhMDR5y04TsXUpYjYRfSQuaK5D.jpg"
 };
 
 const FALLBACK_CATEGORIES = [
@@ -336,7 +336,7 @@ function applySettingsToUI(data) {
   }
 
   if (els.displayPhone) {
-    els.displayPhone.textContent = `📞 ${s.phone || "+963983906667"}`;
+    els.displayPhone.textContent = `📞 ${s.phone || "0983906667"}`;
   }
 
   if (els.restaurantLogo) {
@@ -351,7 +351,7 @@ function applySettingsToUI(data) {
     هنا توضع روابط التواصل الاجتماعي
     هذه القيم تأتي من settings/main في Firestore
   */
-  const whatsappUrl = s.whatsapp || "#";
+  const whatsappUrl = s.whatsapp || "+963983906667";
   const instagramUrl = s.instagram || "#";
   const facebookUrl = s.facebook || "#";
   const mapsUrl = s.maps || "#";
