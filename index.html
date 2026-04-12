@@ -3,14 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- عنوان الصفحة في المتصفح -->
   <title>فطاير ع طاير | المعجنات والبيتزا</title>
+
+  <!-- وصف الصفحة لمحركات البحث -->
   <meta
     name="description"
     content="قائمة طعام رقمية لمطعم فطاير ع طاير، مع عروض، فئات، وبطاقات تفاصيل لكل وجبة مع طلب مباشر عبر واتساب."
   />
+
+  <!-- ملف التنسيق -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
+  <!-- =========================
+       الشريط العلوي
+       يحتوي اسم المطعم والشعار
+  ========================== -->
   <header class="topbar">
     <div class="container topbar-inner">
       <div class="brand">
@@ -28,24 +39,38 @@
     </div>
   </header>
 
+  <!-- =========================
+       محتوى الصفحة الرئيسي
+  ========================== -->
   <main>
+
+    <!-- =========================
+         قسم المقدمة
+         صورة + عنوان + وصف + رقم + خرائط
+    ========================== -->
     <section class="hero">
       <div class="container">
         <div class="hero-card">
+
+          <!-- زخارف خلفية للتصميم -->
           <div class="hero-decor hero-decor-top-right"></div>
           <div class="hero-decor hero-decor-bottom-left"></div>
 
           <div class="hero-head">
             <div class="hero-content">
               <span class="hero-badge">جرّبونا لتعرفونا</span>
+
               <h2 class="hero-title" id="heroTitle">أشهى المعجنات والبيتزا</h2>
+
               <p class="hero-desc" id="heroDescription">
                 تصفّح الأصناف بسهولة، وافتح تفاصيل كل وجبة، واطلب مباشرة عبر واتساب برسالة جاهزة.
               </p>
 
               <div class="contact-line">
-                <span class="contact-chip" id="displayPhone">📞 0983906667</span>
-                <a class="contact-chip" id="mapsInlineBtn" href="#" target="_blank" rel="noopener">📍 الموقع على الخرائط</a>
+                <span class="contact-chip" id="displayPhone">📞 +963983906667</span>
+                <a class="contact-chip" id="mapsInlineBtn" href="#" target="_blank" rel="noopener">
+                  📍 الموقع على الخرائط
+                </a>
               </div>
             </div>
 
@@ -59,6 +84,9 @@
             </div>
           </div>
 
+          <!-- =========================
+               حقل البحث
+          ========================== -->
           <div class="search-wrap">
             <input
               id="searchInput"
@@ -68,6 +96,10 @@
             />
           </div>
 
+          <!-- =========================
+               أزرار الفئات السريعة
+               يتم توليدها تلقائيًا من JavaScript
+          ========================== -->
           <div id="quickCategories" class="quick-categories">
             <button class="category-chip active" data-category="all">الكل</button>
           </div>
@@ -75,6 +107,9 @@
       </div>
     </section>
 
+    <!-- =========================
+         قسم سلايدر العروض
+    ========================== -->
     <section class="offers-section">
       <div class="container">
         <div class="section-head">
@@ -83,6 +118,7 @@
             <p>عروض مميزة وأسعار مناسبة</p>
           </div>
 
+          <!-- فلتر ترتيب الوجبات -->
           <select id="sortFilter" class="select small-select">
             <option value="default">الترتيب الافتراضي</option>
             <option value="price-asc">السعر: من الأقل إلى الأعلى</option>
@@ -98,6 +134,9 @@
       </div>
     </section>
 
+    <!-- =========================
+         قسم الوجبات
+    ========================== -->
     <section class="menu-section">
       <div class="container">
         <div class="section-head">
@@ -112,27 +151,41 @@
     </section>
   </main>
 
+  <!-- =========================
+       أزرار التواصل الثابتة
+       صغيرة وفوق حقوق الملكية
+  ========================== -->
   <div class="floating-socials">
     <a id="whatsappBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="واتساب">
       <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="واتساب" />
     </a>
+
     <a id="instagramBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="إنستغرام">
       <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="إنستغرام" />
     </a>
+
     <a id="facebookBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="فيسبوك">
       <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="فيسبوك" />
     </a>
+
     <a id="mapsBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="خرائط جوجل">
       <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="خرائط" />
     </a>
   </div>
 
+  <!-- =========================
+       حقوق الملكية الثابتة
+  ========================== -->
   <footer class="footer">
     <div class="container">
-      © <span id="yearNow"></span> <span id="footerName">KeFo.tech</span> — جميع الحقوق محفوظة
+      جميع الحقوق محفوظة KeFo.tech
     </div>
   </footer>
 
+  <!-- =========================
+       نافذة تفاصيل الوجبة
+       تظهر عند الضغط على أي وجبة
+  ========================== -->
   <div class="modal" id="mealModal">
     <div class="overlay" data-close="mealModal"></div>
 
@@ -144,8 +197,11 @@
 
         <div class="modal-body">
           <span class="badge" id="modalCategory">القسم</span>
+
           <h3 id="modalName" class="modal-title"></h3>
+
           <div id="modalPrice" class="modal-price"></div>
+
           <p id="modalDescription" class="modal-description"></p>
 
           <div>
@@ -153,6 +209,7 @@
             <div class="ingredients-list" id="modalIngredients"></div>
           </div>
 
+          <!-- زر الطلب عبر واتساب -->
           <button id="orderWhatsappBtn" class="btn btn-primary">
             اطلب عبر واتساب
           </button>
@@ -161,6 +218,7 @@
     </div>
   </div>
 
+  <!-- ملف JavaScript -->
   <script type="module" src="app.js"></script>
 </body>
 </html>
