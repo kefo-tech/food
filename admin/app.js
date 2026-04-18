@@ -19,17 +19,9 @@ import {
   orderBy,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 /* =========================================================
    1) إعداد Firebase
-   ضع بيانات مشروعك هنا
 ========================================================= */
 const firebaseConfig = {
   apiKey: "AIzaSyBrZ_bjKn_4docfkAbqRRmr-uFKN0DHo2c",
@@ -43,10 +35,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 /* =========================================================
-   2) عناصر الصفحة
+   2) إعداد Cloudinary
+========================================================= */
+const cloudinaryConfig = {
+  cloudName: "dbvtq61ws",
+  uploadPreset: "restaurant_upload"
+};
+
+/* =========================================================
+   3) عناصر الصفحة
 ========================================================= */
 const els = {
   navButtons: document.querySelectorAll(".nav-btn"),
@@ -95,17 +94,18 @@ const els = {
 };
 
 /* =========================================================
-   3) الحالة العامة
+   4) الحالة العامة
 ========================================================= */
 let settings = {};
 let categories = [];
 let meals = [];
 
 /* =========================================================
-   4) أدوات مساعدة
+   5) أدوات مساعدة
 ========================================================= */
 function showStatus(message, isError = false) {
   if (!els.statusBox) return;
+
   els.statusBox.textContent = message;
   els.statusBox.classList.remove("error");
   if (isError) els.statusBox.classList.add("error");
@@ -115,23 +115,6 @@ function showStatus(message, isError = false) {
   showStatus.timer = setTimeout(() => {
     els.statusBox.style.display = "none";
   }, 3500);
-}
-
-function normalizeSyrianWhatsappNumber(rawValue) {
-  if (!rawValue) return "";
-  let value = String(rawValue).trim();
-
-  if (value.includes("wa.me")) {
-    return value.replace(/\D/g, "");
-  }
-
-  value = value.replace(/[^\d+]/g, "");
-
-  if (value.startsWith("+963")) return value.replace(/\D/g, "");
-  if (value.startsWith("963")) return value.replace(/\D/g, "");
-  if (value.startsWith("0")) return `963${value.slice(1)}`;
-
-  return value.replace(/\D/g, "");
 }
 
 function safeArrayFromCSV(value) {
@@ -154,6 +137,8 @@ function fillSettingsForm(data) {
 }
 
 function renderCategorySelect() {
+  if (!els.mealCategoryInput) return;
+
   if (!categories.length) {
     els.mealCategoryInput.innerHTML = `<option value="">أضف قسمًا أولًا</option>`;
     return;
@@ -168,17 +153,44 @@ function getCategoryName(categoryId) {
   return categories.find((c) => c.id === categoryId)?.name || "قسم غير معروف";
 }
 
-async function uploadImage(file, folder) {
-  const safeName = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-  const storagePath = `${folder}/${safeName}`;
-  const storageRef = ref(storage, storagePath);
-  await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(storageRef);
-  return { url, storagePath };
+/* =========================================================
+   6) Cloudinary Upload Widget
+========================================================= */
+function openCloudinaryWidget({ folder = "restaurant", onSuccess }) {
+  if (!window.cloudinary) {
+    showStatus("Cloudinary widget لم يتم تحميله.", true);
+    return;
+  }
+
+  const widget = window.cloudinary.createUploadWidget(
+    {
+      cloudName: cloudinaryConfig.cloudName,
+      uploadPreset: cloudinaryConfig.uploadPreset,
+      folder,
+      sources: ["local", "camera", "url"],
+      multiple: false,
+      resourceType: "image",
+      clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
+      maxFiles: 1
+    },
+    (error, result) => {
+      if (error) {
+        console.error(error);
+        showStatus("حدث خطأ أثناء رفع الصورة.", true);
+        return;
+      }
+
+      if (result && result.event === "success") {
+        onSuccess?.(result.info);
+      }
+    }
+  );
+
+  widget.open();
 }
 
 /* =========================================================
-   5) التنقل بين أقسام اللوحة
+   7) التنقل بين أقسام اللوحة
 ========================================================= */
 els.navButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -192,7 +204,7 @@ els.navButtons.forEach((btn) => {
 });
 
 /* =========================================================
-   6) المصادقة
+   8) تسجيل الدخول والخروج
 ========================================================= */
 els.loginBtn?.addEventListener("click", async () => {
   try {
@@ -229,25 +241,21 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 /* =========================================================
-   7) إعدادات المطعم الأساسية
+   9) رفع شعار المطعم عبر Cloudinary
 ========================================================= */
-els.uploadLogoBtn?.addEventListener("click", async () => {
-  const file = els.logoFileInput.files?.[0];
-  if (!file) {
-    showStatus("اختر صورة الشعار أولًا.", true);
-    return;
-  }
-
-  try {
-    const uploaded = await uploadImage(file, "restaurant/logo");
-    els.logoUrlInput.value = uploaded.url;
-    showStatus("تم رفع الشعار بنجاح.");
-  } catch (error) {
-    console.error(error);
-    showStatus("تعذر رفع الشعار.", true);
-  }
+els.uploadLogoBtn?.addEventListener("click", () => {
+  openCloudinaryWidget({
+    folder: "restaurant/logo",
+    onSuccess: (info) => {
+      els.logoUrlInput.value = info.secure_url || info.url || "";
+      showStatus("تم رفع شعار المطعم بنجاح.");
+    }
+  });
 });
 
+/* =========================================================
+   10) حفظ إعدادات المطعم
+========================================================= */
 els.saveSettingsBtn?.addEventListener("click", async () => {
   try {
     const payload = {
@@ -273,7 +281,7 @@ els.saveSettingsBtn?.addEventListener("click", async () => {
 });
 
 /* =========================================================
-   8) بيانات التواصل والخريطة
+   11) حفظ بيانات التواصل
 ========================================================= */
 els.saveContactBtn?.addEventListener("click", async () => {
   try {
@@ -295,9 +303,11 @@ els.saveContactBtn?.addEventListener("click", async () => {
 });
 
 /* =========================================================
-   9) الأقسام
+   12) الأقسام
 ========================================================= */
 function renderCategoriesList() {
+  if (!els.categoriesList) return;
+
   if (!categories.length) {
     els.categoriesList.innerHTML = `<div class="panel-card">لا توجد أقسام بعد.</div>`;
     return;
@@ -349,9 +359,11 @@ els.addCategoryBtn?.addEventListener("click", async () => {
 });
 
 /* =========================================================
-   10) الوجبات
+   13) الوجبات
 ========================================================= */
 function renderMealsList() {
+  if (!els.mealsList) return;
+
   if (!meals.length) {
     els.mealsList.innerHTML = `<div class="panel-card">لا توجد وجبات بعد.</div>`;
     return;
@@ -372,7 +384,7 @@ function renderMealsList() {
         </div>
         <div class="item-actions">
           <button class="btn btn-secondary" data-fill-meal="${meal.id}">تعديل</button>
-          <button class="btn btn-danger" data-delete-meal="${meal.id}" data-image-path="${meal.storagePath || ""}">حذف</button>
+          <button class="btn btn-danger" data-delete-meal="${meal.id}">حذف</button>
         </div>
       </div>
     `
@@ -388,15 +400,21 @@ function fillMealForm(mealId) {
   els.mealCategoryInput.value = meal.categoryId || "";
   els.mealPriceInput.value = meal.price ?? "";
   els.mealOldPriceInput.value = meal.oldPrice ?? "";
-  els.mealIngredientsInput.value = Array.isArray(meal.ingredients) ? meal.ingredients.join(", ") : "";
+  els.mealIngredientsInput.value = Array.isArray(meal.ingredients)
+    ? meal.ingredients.join(", ")
+    : "";
   els.mealActionTypeInput.value = meal.actionType || "counter";
   els.mealFeaturedInput.value = String(!!meal.featured);
   els.mealDescriptionInput.value = meal.description || "";
   els.mealImageUrlInput.value = meal.imageUrl || "";
+
   els.addMealBtn.dataset.editingId = meal.id;
   els.addMealBtn.textContent = "حفظ تعديل الوجبة";
 
-  document.getElementById("mealsSection")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.getElementById("mealsSection")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 }
 
 function resetMealForm() {
@@ -408,27 +426,20 @@ function resetMealForm() {
   els.mealFeaturedInput.value = "true";
   els.mealDescriptionInput.value = "";
   els.mealImageUrlInput.value = "";
-  els.mealImageFileInput.value = "";
+  if (els.mealImageFileInput) els.mealImageFileInput.value = "";
+
   delete els.addMealBtn.dataset.editingId;
   els.addMealBtn.textContent = "إضافة الوجبة";
 }
 
-els.uploadMealImageBtn?.addEventListener("click", async () => {
-  const file = els.mealImageFileInput.files?.[0];
-  if (!file) {
-    showStatus("اختر صورة الوجبة أولًا.", true);
-    return;
-  }
-
-  try {
-    const uploaded = await uploadImage(file, "restaurant/meals");
-    els.mealImageUrlInput.value = uploaded.url;
-    els.mealImageUrlInput.dataset.storagePath = uploaded.storagePath;
-    showStatus("تم رفع صورة الوجبة.");
-  } catch (error) {
-    console.error(error);
-    showStatus("تعذر رفع صورة الوجبة.", true);
-  }
+els.uploadMealImageBtn?.addEventListener("click", () => {
+  openCloudinaryWidget({
+    folder: "restaurant/meals",
+    onSuccess: (info) => {
+      els.mealImageUrlInput.value = info.secure_url || info.url || "";
+      showStatus("تم رفع صورة الوجبة بنجاح.");
+    }
+  });
 });
 
 els.addMealBtn?.addEventListener("click", async () => {
@@ -438,13 +449,14 @@ els.addMealBtn?.addEventListener("click", async () => {
     name: els.mealNameInput.value.trim(),
     categoryId: els.mealCategoryInput.value,
     price: Number(els.mealPriceInput.value || 0),
-    oldPrice: els.mealOldPriceInput.value ? Number(els.mealOldPriceInput.value) : null,
+    oldPrice: els.mealOldPriceInput.value
+      ? Number(els.mealOldPriceInput.value)
+      : null,
     ingredients: safeArrayFromCSV(els.mealIngredientsInput.value),
     actionType: els.mealActionTypeInput.value,
     featured: els.mealFeaturedInput.value === "true",
     description: els.mealDescriptionInput.value.trim(),
     imageUrl: els.mealImageUrlInput.value.trim(),
-    storagePath: els.mealImageUrlInput.dataset.storagePath || "",
     updatedAt: serverTimestamp()
   };
 
@@ -474,7 +486,7 @@ els.addMealBtn?.addEventListener("click", async () => {
 });
 
 /* =========================================================
-   11) الحذف والتعديل من القوائم
+   14) حذف وتعديل من القوائم
 ========================================================= */
 document.addEventListener("click", async (e) => {
   const deleteCategoryId = e.target.getAttribute("data-delete-category");
@@ -496,15 +508,8 @@ document.addEventListener("click", async (e) => {
 
   const deleteMealId = e.target.getAttribute("data-delete-meal");
   if (deleteMealId) {
-    const imagePath = e.target.getAttribute("data-image-path");
-
     try {
       await deleteDoc(doc(db, "meals", deleteMealId));
-      if (imagePath) {
-        try {
-          await deleteObject(ref(storage, imagePath));
-        } catch (_) {}
-      }
       await loadMeals();
       showStatus("تم حذف الوجبة.");
     } catch (error) {
@@ -515,7 +520,7 @@ document.addEventListener("click", async (e) => {
 });
 
 /* =========================================================
-   12) جلب البيانات من Firestore
+   15) جلب البيانات من Firestore
 ========================================================= */
 async function loadSettings() {
   const snap = await getDoc(doc(db, "settings", "main"));
@@ -524,14 +529,18 @@ async function loadSettings() {
 }
 
 async function loadCategories() {
-  const snap = await getDocs(query(collection(db, "categories"), orderBy("order", "asc")));
+  const snap = await getDocs(
+    query(collection(db, "categories"), orderBy("order", "asc"))
+  );
   categories = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
   renderCategorySelect();
   renderCategoriesList();
 }
 
 async function loadMeals() {
-  const snap = await getDocs(query(collection(db, "meals"), orderBy("createdAt", "desc")));
+  const snap = await getDocs(
+    query(collection(db, "meals"), orderBy("createdAt", "desc"))
+  );
   meals = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
   renderMealsList();
 }
