@@ -1,14 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  getDoc,
-  doc,
-  query,
-  orderBy
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 /* =========================================================
    1) حماية النسخ وزر اليمين
 ========================================================= */
@@ -37,22 +26,7 @@ import {
 })();
 
 /* =========================================================
-   2) Firebase
-========================================================= */
-const firebaseConfig = {
-  apiKey: "PUT_YOUR_API_KEY",
-  authDomain: "PUT_YOUR_AUTH_DOMAIN",
-  projectId: "PUT_YOUR_PROJECT_ID",
-  storageBucket: "PUT_YOUR_STORAGE_BUCKET",
-  messagingSenderId: "PUT_YOUR_MESSAGING_SENDER_ID",
-  appId: "PUT_YOUR_APP_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-/* =========================================================
-   3) العناصر
+   2) عناصر الصفحة
 ========================================================= */
 const els = {
   restaurantName: document.getElementById("restaurantName"),
@@ -97,6 +71,9 @@ const els = {
   drawerCloseBtn: document.getElementById("drawerCloseBtn")
 };
 
+/* =========================================================
+   3) الحالة العامة
+========================================================= */
 let settings = null;
 let categories = [];
 let meals = [];
@@ -104,18 +81,21 @@ let activeCategory = "all";
 let currentSort = "default";
 
 /* =========================================================
-   4) بيانات احتياطية
+   4) بيانات محلية تجريبية
+   طالما Firestore غير مبني بعد
 ========================================================= */
 const FALLBACK_SETTINGS = {
   restaurantName: "فطاير ع طاير",
   subtitle: "للمعجنات والبيتزا",
-  aboutText: "نقدم لكم أشهى المأكولات المحضرة بعناية من أجود المكونات الطازجة، ونسعى دائمًا لتقديم تجربة طعام لا تُنسى.",
+  aboutText:
+    "نقدم لكم أشهى المأكولات المحضرة بعناية من أجود المكونات الطازجة، ونسعى دائمًا لتقديم تجربة طعام لا تُنسى.",
   phone: "0983906667",
   instagram: "#",
   facebook: "#",
   maps: "#",
   addressText: "الموقع على خرائط جوجل",
-  logoUrl: "https://images.unsplash.com/photo-1541544181051-e46607c3a54b?q=80&w=600&auto=format&fit=crop"
+  logoUrl:
+    "https://images.unsplash.com/photo-1541544181051-e46607c3a54b?q=80&w=600&auto=format&fit=crop"
 };
 
 const FALLBACK_CATEGORIES = [
@@ -135,7 +115,8 @@ const FALLBACK_MEALS = [
     ingredients: ["خبز", "دجاج", "خس"],
     featured: true,
     actionType: "counter",
-    imageUrl: "https://images.unsplash.com/photo-1550317138-10000687a72b?q=80&w=1200&auto=format&fit=crop"
+    imageUrl:
+      "https://images.unsplash.com/photo-1550317138-10000687a72b?q=80&w=800&auto=format&fit=crop"
   },
   {
     id: "m2",
@@ -147,7 +128,8 @@ const FALLBACK_MEALS = [
     ingredients: ["شاورما", "بطاطا", "مخللات"],
     featured: true,
     actionType: "counter",
-    imageUrl: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?q=80&w=1200&auto=format&fit=crop"
+    imageUrl:
+      "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?q=80&w=800&auto=format&fit=crop"
   },
   {
     id: "m3",
@@ -159,7 +141,34 @@ const FALLBACK_MEALS = [
     ingredients: ["دجاج", "بطاطا", "صلصة"],
     featured: true,
     actionType: "select",
-    imageUrl: "https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=1200&auto=format&fit=crop"
+    imageUrl:
+      "https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=800&auto=format&fit=crop"
+  },
+  {
+    id: "m4",
+    name: "صحن فروج",
+    price: 180,
+    oldPrice: 240,
+    categoryId: "cat3",
+    description: "صحن فروج مع بطاطا ومخللات",
+    ingredients: ["فروج", "بطاطا", "مخللات"],
+    featured: false,
+    actionType: "counter",
+    imageUrl:
+      "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=800&auto=format&fit=crop"
+  },
+  {
+    id: "m5",
+    name: "مشاوي مشكلة",
+    price: 320,
+    oldPrice: 400,
+    categoryId: "cat1",
+    description: "طبق مشاوي مشكلة مع خبز وسلطات",
+    ingredients: ["كباب", "شيش", "خبز"],
+    featured: false,
+    actionType: "select",
+    imageUrl:
+      "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop"
   }
 ];
 
@@ -232,12 +241,12 @@ function buildWhatsappMessage(meal) {
    6) القائمة الجانبية
 ========================================================= */
 function openDrawer() {
-  els.sideDrawer.classList.add("show");
+  els.sideDrawer?.classList.add("show");
   document.body.style.overflow = "hidden";
 }
 
 function closeDrawer() {
-  els.sideDrawer.classList.remove("show");
+  els.sideDrawer?.classList.remove("show");
   document.body.style.overflow = "";
 }
 
@@ -246,7 +255,7 @@ els.drawerOverlay?.addEventListener("click", closeDrawer);
 els.drawerCloseBtn?.addEventListener("click", closeDrawer);
 
 /* =========================================================
-   7) إعدادات الواجهة
+   7) تطبيق الإعدادات على الواجهة
 ========================================================= */
 function applySettingsToUI(data) {
   const s = data || FALLBACK_SETTINGS;
@@ -299,9 +308,7 @@ function bindCategoryEvents() {
     if (!btn) return;
 
     activeCategory = btn.dataset.category || "all";
-    renderQuickCategories();
-    renderFeaturedMeals();
-    renderMeals();
+    renderAllVisibleContent();
   });
 }
 
@@ -314,14 +321,13 @@ function bindSmartFilterEvents() {
       document.querySelectorAll(".smart-filter").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       currentSort = btn.dataset.sort || "default";
-      renderFeaturedMeals();
-      renderMeals();
+      renderAllVisibleContent();
     });
   });
 }
 
 /* =========================================================
-   10) بطاقة الوجبة
+   10) بناء بطاقة الوجبة
 ========================================================= */
 function buildActionButton(meal) {
   if (meal.actionType === "select") {
@@ -356,16 +362,22 @@ function buildFoodCard(meal) {
       </div>
 
       <div class="food-card-image">
-        <img src="${meal.imageUrl}" alt="${meal.name}" />
+        <img
+          src="${meal.imageUrl}"
+          alt="${meal.name}"
+          loading="lazy"
+          decoding="async"
+          referrerpolicy="no-referrer"
+        />
       </div>
     </article>
   `;
 }
 
 /* =========================================================
-   11) الفلترة
+   11) الفلترة السريعة
 ========================================================= */
-function getFilteredMeals() {
+function getCurrentMealsView() {
   const search = els.searchInput?.value.trim().toLowerCase() || "";
 
   let filtered = meals.filter((meal) => {
@@ -394,12 +406,11 @@ function getFilteredMeals() {
 /* =========================================================
    12) الأكثر طلباً
 ========================================================= */
-function renderFeaturedMeals() {
+function renderFeaturedMeals(filteredMeals) {
   if (!els.featuredGrid) return;
 
-  const sourceMeals = getFilteredMeals();
-  const featured = sourceMeals.filter(meal => meal.featured).slice(0, 3);
-  const finalItems = featured.length ? featured : sourceMeals.slice(0, 3);
+  const featured = filteredMeals.filter(meal => meal.featured).slice(0, 3);
+  const finalItems = featured.length ? featured : filteredMeals.slice(0, 3);
 
   if (!finalItems.length) {
     els.featuredGrid.innerHTML = `<div class="empty-state">لا توجد عناصر مميزة حاليًا.</div>`;
@@ -412,10 +423,9 @@ function renderFeaturedMeals() {
 /* =========================================================
    13) القائمة الرئيسية
 ========================================================= */
-function renderMeals() {
+function renderMeals(filteredMeals) {
   if (!els.menuGroups || !els.menuCounter) return;
 
-  const filteredMeals = getFilteredMeals();
   els.menuCounter.textContent = `${filteredMeals.length} وجبة متاحة`;
 
   if (!filteredMeals.length) {
@@ -450,7 +460,17 @@ function renderMeals() {
 }
 
 /* =========================================================
-   14) نافذة التفاصيل
+   14) إعادة الرسم مرة واحدة فقط
+========================================================= */
+function renderAllVisibleContent() {
+  renderQuickCategories();
+  const filteredMeals = getCurrentMealsView();
+  renderFeaturedMeals(filteredMeals);
+  renderMeals(filteredMeals);
+}
+
+/* =========================================================
+   15) نافذة التفاصيل
 ========================================================= */
 function openMealModal(meal) {
   els.modalImage.src = meal.imageUrl;
@@ -477,8 +497,8 @@ function openMealModal(meal) {
 
 function bindMealEvents() {
   document.addEventListener("click", (e) => {
-    const imageArea = e.target.closest(".food-card-image, .food-card");
-    if (!imageArea) return;
+    const area = e.target.closest(".food-card-image, .food-card");
+    if (!area) return;
 
     const card = e.target.closest(".food-card");
     if (!card) return;
@@ -489,60 +509,31 @@ function bindMealEvents() {
 }
 
 /* =========================================================
-   15) جلب البيانات
+   16) التحميل المحلي السريع
 ========================================================= */
-async function loadSettings() {
-  try {
-    const snap = await getDoc(doc(db, "settings", "main"));
-    settings = snap.exists() ? snap.data() : FALLBACK_SETTINGS;
-  } catch {
-    settings = FALLBACK_SETTINGS;
-  }
+function init() {
+  settings = FALLBACK_SETTINGS;
+  categories = [...FALLBACK_CATEGORIES];
+  meals = [...FALLBACK_MEALS];
 
   applySettingsToUI(settings);
-}
-
-async function loadCategories() {
-  try {
-    const snap = await getDocs(query(collection(db, "categories"), orderBy("order", "asc")));
-    categories = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    if (!categories.length) categories = [...FALLBACK_CATEGORIES];
-  } catch {
-    categories = [...FALLBACK_CATEGORIES];
-  }
-
-  renderQuickCategories();
-}
-
-async function loadMeals() {
-  try {
-    const snap = await getDocs(query(collection(db, "meals"), orderBy("createdAt", "desc")));
-    meals = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    if (!meals.length) meals = [...FALLBACK_MEALS];
-  } catch {
-    meals = [...FALLBACK_MEALS];
-  }
-
-  renderFeaturedMeals();
-  renderMeals();
-}
-
-async function init() {
-  await loadSettings();
-  await loadCategories();
-  await loadMeals();
+  renderAllVisibleContent();
 }
 
 /* =========================================================
-   16) البحث
+   17) البحث مع debounce
 ========================================================= */
+let searchTimer;
+
 els.searchInput?.addEventListener("input", () => {
-  renderFeaturedMeals();
-  renderMeals();
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    renderAllVisibleContent();
+  }, 180);
 });
 
 /* =========================================================
-   17) بدء التشغيل
+   18) بدء التشغيل
 ========================================================= */
 bindCategoryEvents();
 bindSmartFilterEvents();
