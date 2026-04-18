@@ -4,31 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- عنوان الصفحة في المتصفح -->
-  <title>فطاير ع طاير | المعجنات والبيتزا</title>
+  <!-- عنوان الصفحة -->
+  <title>فطاير ع طاير | القائمة الرقمية</title>
 
-  <!-- وصف الصفحة لمحركات البحث -->
+  <!-- وصف لمحركات البحث -->
   <meta
     name="description"
-    content="قائمة طعام رقمية لمطعم فطاير ع طاير، مع عروض، فئات، وبطاقات تفاصيل لكل وجبة مع طلب مباشر عبر واتساب."
+    content="واجهة منيو مطعم حديثة شبيهة بأسلوب مواقع المنيو الاحترافية، مع فئات، عروض، منتجات مميزة، وتفاصيل طلب عبر واتساب."
   />
 
-  <!-- ملف التنسيق -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- =========================
-       الشريط العلوي
-       يحتوي اسم المطعم والشعار
-  ========================== -->
+  <!-- =========================================
+       الهيدر العلوي
+       شعار + اسم المطعم
+  ========================================== -->
   <header class="topbar">
     <div class="container topbar-inner">
-      <div class="brand">
+      <div class="brand brand-centered">
         <img
           id="restaurantLogo"
           class="brand-logo"
-          src="https://png.pngtree.com/png-vector/20250104/ourmid/pngtree-a-chef-holding-hamburger-and-fries-png-image_15048996.png"
+          src="https://images.unsplash.com/photo-1541544181051-e46607c3a54b?q=80&w=600&auto=format&fit=crop"
           alt="شعار المطعم"
         />
         <div>
@@ -39,86 +38,86 @@
     </div>
   </header>
 
-  <!-- =========================
-       محتوى الصفحة الرئيسي
-  ========================== -->
   <main>
-
-    <!-- =========================
-         قسم المقدمة
-         صورة + عنوان + وصف + رقم + خرائط
-    ========================== -->
+    <!-- =========================================
+         القسم الرئيسي
+         فئات + بحث + بنرات
+    ========================================== -->
     <section class="hero">
       <div class="container">
         <div class="hero-card">
-
-          <!-- زخارف خلفية للتصميم -->
-          <div class="hero-decor hero-decor-top-right"></div>
-          <div class="hero-decor hero-decor-bottom-left"></div>
-
-          <div class="hero-head">
-            <div class="hero-content">
+          <div class="hero-head simple-hero">
+            <div class="hero-content center-text">
               <span class="hero-badge">جرّبونا لتعرفونا</span>
-
               <h2 class="hero-title" id="heroTitle">أشهى المعجنات والبيتزا</h2>
-
               <p class="hero-desc" id="heroDescription">
-                تصفّح الأصناف بسهولة، وافتح تفاصيل كل وجبة، واطلب مباشرة عبر واتساب برسالة جاهزة.
+                تصفح قائمة الطعام بسرعة، شاهد الوجبات المميزة، وافتح تفاصيل أي وجبة للطلب المباشر عبر واتساب.
               </p>
-
-              <div class="contact-line">
-                <span class="contact-chip" id="displayPhone">📞 0983906667</span>
-                <a class="contact-chip" id="mapsInlineBtn" href="#" target="_blank" rel="noopener">
-                  📍 الموقع على الخرائط
-                </a>
-              </div>
-            </div>
-
-            <div class="hero-image-wrap">
-              <img
-                id="heroBanner"
-                class="hero-banner"
-                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop"
-                alt="صورة المطعم"
-              />
             </div>
           </div>
 
-          <!-- =========================
-               حقل البحث
-          ========================== -->
+          <!-- أزرار الفئات -->
+          <div class="categories-title">الفئات</div>
+          <div id="quickCategories" class="quick-categories">
+            <button class="category-chip active" data-category="all">عرض الكل</button>
+          </div>
+
+          <!-- حقل البحث -->
           <div class="search-wrap">
             <input
               id="searchInput"
               class="field"
               type="text"
-              placeholder="ابحث عن وجبة، مكون، أو قسم..."
+              placeholder="ابحث عن منتجك المفضل..."
             />
           </div>
 
-          <!-- =========================
-               أزرار الفئات السريعة
-               يتم توليدها تلقائيًا من JavaScript
-          ========================== -->
-          <div id="quickCategories" class="quick-categories">
-            <button class="category-chip active" data-category="all">الكل</button>
+          <!-- بنرات العروض -->
+          <div class="banner-grid" id="bannerGrid">
+            <div class="banner-card">
+              <img
+                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop"
+                alt="بانر 1"
+              />
+            </div>
+            <div class="banner-card">
+              <img
+                src="https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1200&auto=format&fit=crop"
+                alt="بانر 2"
+              />
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- =========================
-         قسم سلايدر العروض
-    ========================== -->
-    <section class="offers-section">
+    <!-- =========================================
+         قسم الأكثر طلبًا وتميزًا
+    ========================================== -->
+    <section class="featured-section">
+      <div class="container">
+        <div class="section-head centered-head">
+          <div>
+            <h2>الأكثر طلبًا وتميزًا</h2>
+            <p>منتجات مختارة لعرضها في الواجهة أولًا</p>
+          </div>
+        </div>
+
+        <div id="featuredGrid" class="featured-grid"></div>
+      </div>
+    </section>
+
+    <!-- =========================================
+         قسم قائمة الطعام كاملة
+    ========================================== -->
+    <section class="menu-section">
       <div class="container">
         <div class="section-head">
           <div>
-            <h2>العروض الحالية</h2>
-            <p>عروض مميزة وأسعار مناسبة</p>
+            <h2>قائمة الطعام</h2>
+            <p id="menuCounter">جاري تحميل الوجبات...</p>
           </div>
 
-          <!-- فلتر ترتيب الوجبات -->
           <select id="sortFilter" class="select small-select">
             <option value="default">الترتيب الافتراضي</option>
             <option value="price-asc">السعر: من الأقل إلى الأعلى</option>
@@ -127,34 +126,57 @@
           </select>
         </div>
 
-        <div class="slider-shell">
-          <div class="slider-track" id="offersTrack"></div>
-          <div class="slider-dots" id="offersDots"></div>
-        </div>
+        <div id="menuGroups" class="menu-groups"></div>
       </div>
     </section>
 
-    <!-- =========================
-         قسم الوجبات
-    ========================== -->
-    <section class="menu-section">
+    <!-- =========================================
+         قسم من نحن + التواصل
+    ========================================== -->
+    <section class="about-section">
       <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>قائمة الطعام</h2>
-            <p id="menuCounter">جاري تحميل الوجبات...</p>
+        <div class="about-card">
+          <div class="about-grid">
+            <div class="about-brand">
+              <img
+                id="footerLogo"
+                class="about-logo"
+                src="https://images.unsplash.com/photo-1541544181051-e46607c3a54b?q=80&w=600&auto=format&fit=crop"
+                alt="شعار المطعم"
+              />
+              <h3 id="footerRestaurantName">فطاير ع طاير</h3>
+            </div>
+
+            <div>
+              <h4>من نحن</h4>
+              <p id="aboutText">
+                نقدم لكم أشهى المأكولات المحضرة بعناية من أجود المكونات الطازجة، ونسعى دائمًا لتقديم تجربة طعام لذيذة وسريعة.
+              </p>
+            </div>
+
+            <div>
+              <h4>التواصل والعنوان</h4>
+              <div class="contact-list">
+                <a id="displayPhoneLink" class="contact-row" href="#" target="_blank" rel="noopener">
+                  <span>واتساب:</span>
+                  <strong id="displayPhone">+963983906667</strong>
+                </a>
+
+                <a id="mapsInlineBtn" class="contact-row" href="#" target="_blank" rel="noopener">
+                  <span>العنوان:</span>
+                  <strong id="displayAddress">الموقع على خرائط جوجل</strong>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div id="menuGroups" class="menu-groups"></div>
       </div>
     </section>
   </main>
 
-  <!-- =========================
+  <!-- =========================================
        أزرار التواصل الثابتة
-       صغيرة وفوق حقوق الملكية
-  ========================== -->
+  ========================================== -->
   <div class="floating-socials">
     <a id="whatsappBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="واتساب">
       <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="واتساب" />
@@ -173,19 +195,18 @@
     </a>
   </div>
 
-  <!-- =========================
+  <!-- =========================================
        حقوق الملكية الثابتة
-  ========================== -->
+  ========================================== -->
   <footer class="footer">
     <div class="container">
       جميع الحقوق محفوظة KeFo.tech
     </div>
   </footer>
 
-  <!-- =========================
+  <!-- =========================================
        نافذة تفاصيل الوجبة
-       تظهر عند الضغط على أي وجبة
-  ========================== -->
+  ========================================== -->
   <div class="modal" id="mealModal">
     <div class="overlay" data-close="mealModal"></div>
 
@@ -197,11 +218,8 @@
 
         <div class="modal-body">
           <span class="badge" id="modalCategory">القسم</span>
-
           <h3 id="modalName" class="modal-title"></h3>
-
           <div id="modalPrice" class="modal-price"></div>
-
           <p id="modalDescription" class="modal-description"></p>
 
           <div>
@@ -209,7 +227,6 @@
             <div class="ingredients-list" id="modalIngredients"></div>
           </div>
 
-          <!-- زر الطلب عبر واتساب -->
           <button id="orderWhatsappBtn" class="btn btn-primary">
             اطلب عبر واتساب
           </button>
@@ -218,7 +235,6 @@
     </div>
   </div>
 
-  <!-- ملف JavaScript -->
   <script type="module" src="app.js"></script>
 </body>
 </html>
