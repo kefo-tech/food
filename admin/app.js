@@ -32,12 +32,12 @@ import {
    ضع بيانات مشروعك هنا
 ========================================================= */
 const firebaseConfig = {
-  apiKey: "PUT_YOUR_API_KEY",
-  authDomain: "PUT_YOUR_AUTH_DOMAIN",
-  projectId: "PUT_YOUR_PROJECT_ID",
-  storageBucket: "PUT_YOUR_STORAGE_BUCKET",
-  messagingSenderId: "PUT_YOUR_MESSAGING_SENDER_ID",
-  appId: "PUT_YOUR_APP_ID"
+  apiKey: "AIzaSyBrZ_bjKn_4docfkAbqRRmr-uFKN0DHo2c",
+  authDomain: "restaurant-menu-b06cc.firebaseapp.com",
+  projectId: "restaurant-menu-b06cc",
+  storageBucket: "restaurant-menu-b06cc.firebasestorage.app",
+  messagingSenderId: "1035129331473",
+  appId: "1:1035129331473:web:4a4141ce29e80e2d72b6b0"
 };
 
 const app = initializeApp(firebaseConfig);
