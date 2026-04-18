@@ -1,3 +1,14 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  getDocs,
+  collection,
+  query,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 /* =========================================================
    1) حماية النسخ وزر اليمين
 ========================================================= */
@@ -26,7 +37,22 @@
 })();
 
 /* =========================================================
-   2) عناصر الصفحة
+   2) Firebase
+========================================================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyBrZ_bjKn_4docfkAbqRRmr-uFKN0DHo2c",
+  authDomain: "restaurant-menu-b06cc.firebaseapp.com",
+  projectId: "restaurant-menu-b06cc",
+  storageBucket: "restaurant-menu-b06cc.firebasestorage.app",
+  messagingSenderId: "1035129331473",
+  appId: "1:1035129331473:web:4a4141ce29e80e2d72b6b0"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* =========================================================
+   3) عناصر الصفحة
 ========================================================= */
 const els = {
   restaurantName: document.getElementById("restaurantName"),
@@ -72,7 +98,7 @@ const els = {
 };
 
 /* =========================================================
-   3) الحالة العامة
+   4) الحالة العامة
 ========================================================= */
 let settings = null;
 let categories = [];
@@ -81,8 +107,7 @@ let activeCategory = "all";
 let currentSort = "default";
 
 /* =========================================================
-   4) بيانات محلية تجريبية
-   طالما Firestore غير مبني بعد
+   5) بيانات احتياطية
 ========================================================= */
 const FALLBACK_SETTINGS = {
   restaurantName: "فطاير ع طاير",
@@ -173,7 +198,7 @@ const FALLBACK_MEALS = [
 ];
 
 /* =========================================================
-   5) أدوات مساعدة
+   6) أدوات مساعدة
 ========================================================= */
 function openPanel(id) {
   const panel = document.getElementById(id);
@@ -238,7 +263,7 @@ function buildWhatsappMessage(meal) {
 }
 
 /* =========================================================
-   6) القائمة الجانبية
+   7) القائمة الجانبية
 ========================================================= */
 function openDrawer() {
   els.sideDrawer?.classList.add("show");
@@ -255,7 +280,7 @@ els.drawerOverlay?.addEventListener("click", closeDrawer);
 els.drawerCloseBtn?.addEventListener("click", closeDrawer);
 
 /* =========================================================
-   7) تطبيق الإعدادات على الواجهة
+   8) تطبيق الإعدادات على الواجهة
 ========================================================= */
 function applySettingsToUI(data) {
   const s = data || FALLBACK_SETTINGS;
@@ -287,7 +312,7 @@ function applySettingsToUI(data) {
 }
 
 /* =========================================================
-   8) الفئات
+   9) الفئات
 ========================================================= */
 function renderQuickCategories() {
   if (!els.quickCategories) return;
@@ -313,7 +338,7 @@ function bindCategoryEvents() {
 }
 
 /* =========================================================
-   9) الفلتر الذكي
+   10) الفلتر الذكي
 ========================================================= */
 function bindSmartFilterEvents() {
   document.querySelectorAll(".smart-filter").forEach(btn => {
@@ -327,7 +352,7 @@ function bindSmartFilterEvents() {
 }
 
 /* =========================================================
-   10) بناء بطاقة الوجبة
+   11) بناء بطاقة الوجبة
 ========================================================= */
 function buildActionButton(meal) {
   if (meal.actionType === "select") {
@@ -375,7 +400,7 @@ function buildFoodCard(meal) {
 }
 
 /* =========================================================
-   11) الفلترة السريعة
+   12) الفلترة السريعة
 ========================================================= */
 function getCurrentMealsView() {
   const search = els.searchInput?.value.trim().toLowerCase() || "";
@@ -404,7 +429,7 @@ function getCurrentMealsView() {
 }
 
 /* =========================================================
-   12) الأكثر طلباً
+   13) الأكثر طلباً
 ========================================================= */
 function renderFeaturedMeals(filteredMeals) {
   if (!els.featuredGrid) return;
@@ -421,7 +446,7 @@ function renderFeaturedMeals(filteredMeals) {
 }
 
 /* =========================================================
-   13) القائمة الرئيسية
+   14) القائمة الرئيسية
 ========================================================= */
 function renderMeals(filteredMeals) {
   if (!els.menuGroups || !els.menuCounter) return;
@@ -460,7 +485,7 @@ function renderMeals(filteredMeals) {
 }
 
 /* =========================================================
-   14) إعادة الرسم مرة واحدة فقط
+   15) إعادة الرسم مرة واحدة فقط
 ========================================================= */
 function renderAllVisibleContent() {
   renderQuickCategories();
@@ -470,7 +495,7 @@ function renderAllVisibleContent() {
 }
 
 /* =========================================================
-   15) نافذة التفاصيل
+   16) نافذة التفاصيل
 ========================================================= */
 function openMealModal(meal) {
   els.modalImage.src = meal.imageUrl;
@@ -509,19 +534,69 @@ function bindMealEvents() {
 }
 
 /* =========================================================
-   16) التحميل المحلي السريع
+   17) جلب البيانات من Firestore
 ========================================================= */
-function init() {
-  settings = FALLBACK_SETTINGS;
-  categories = [...FALLBACK_CATEGORIES];
-  meals = [...FALLBACK_MEALS];
+async function loadSettings() {
+  try {
+    const snap = await getDoc(doc(db, "settings", "main"));
+    settings = snap.exists() ? snap.data() : FALLBACK_SETTINGS;
+  } catch (error) {
+    console.error("Settings load error:", error);
+    settings = FALLBACK_SETTINGS;
+  }
 
   applySettingsToUI(settings);
+}
+
+async function loadCategories() {
+  try {
+    const snap = await getDocs(
+      query(collection(db, "categories"), orderBy("order", "asc"))
+    );
+
+    categories = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+    if (!categories.length) {
+      categories = [...FALLBACK_CATEGORIES];
+    }
+  } catch (error) {
+    console.error("Categories load error:", error);
+    categories = [...FALLBACK_CATEGORIES];
+  }
+}
+
+async function loadMeals() {
+  try {
+    const snap = await getDocs(
+      query(collection(db, "meals"), orderBy("createdAt", "desc"))
+    );
+
+    meals = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+    if (!meals.length) {
+      meals = [...FALLBACK_MEALS];
+    }
+  } catch (error) {
+    console.error("Meals load error:", error);
+    meals = [...FALLBACK_MEALS];
+  }
+}
+
+/* =========================================================
+   18) بدء التحميل
+========================================================= */
+async function init() {
+  await Promise.all([
+    loadSettings(),
+    loadCategories(),
+    loadMeals()
+  ]);
+
   renderAllVisibleContent();
 }
 
 /* =========================================================
-   17) البحث مع debounce
+   19) البحث مع debounce
 ========================================================= */
 let searchTimer;
 
@@ -533,7 +608,7 @@ els.searchInput?.addEventListener("input", () => {
 });
 
 /* =========================================================
-   18) بدء التشغيل
+   20) بدء التشغيل
 ========================================================= */
 bindCategoryEvents();
 bindSmartFilterEvents();
