@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>فطاير ع طاير. | القائمة الرقمية</title>
+  <title>فطاير ع طاير | القائمة الرقمية</title>
   <meta name="description" content="واجهة منيو مطعم حديثة مع فئات وبحث وبطاقات وجبات وطلب واتساب." />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -15,11 +15,17 @@
   <!-- القائمة الجانبية -->
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-overlay" id="drawerOverlay"></div>
+
     <div class="drawer-panel">
       <button class="drawer-close" id="drawerCloseBtn">×</button>
 
       <div class="drawer-header">
-        <img id="drawerLogo" class="drawer-logo" src="https://images.unsplash.com/photo-1541544181051-e46607c3a54b?q=80&w=600&auto=format&fit=crop" alt="شعار المطعم" />
+        <img
+          id="drawerLogo"
+          class="drawer-logo"
+          src="https://images.unsplash.com/photo-1541544181051-e46607c3a54b?q=80&w=600&auto=format&fit=crop"
+          alt="شعار المطعم"
+        />
         <h2 id="drawerRestaurantName">فطاير ع طاير</h2>
       </div>
 
@@ -41,11 +47,11 @@
           📞 <span id="displayPhone">+963983906667</span>
         </a>
 
-        <a id="instagramBtn" class="drawer-link" href="#" target="_blank" rel="noopener">
+        <a id="instagramDrawerBtn" class="drawer-link" href="#" target="_blank" rel="noopener">
           📸 إنستغرام
         </a>
 
-        <a id="facebookBtn" class="drawer-link" href="#" target="_blank" rel="noopener">
+        <a id="facebookDrawerBtn" class="drawer-link" href="#" target="_blank" rel="noopener">
           📘 فيسبوك
         </a>
       </section>
@@ -66,7 +72,7 @@
           src="https://images.unsplash.com/photo-1541544181051-e46607c3a54b?q=80&w=600&auto=format&fit=crop"
           alt="شعار المطعم"
         />
-        <div>
+        <div class="brand-text">
           <h1 id="restaurantName">فطاير ع طاير</h1>
           <p id="restaurantSubtitle">للمعجنات والبيتزا</p>
         </div>
@@ -84,10 +90,15 @@
         </div>
       </section>
 
-      <!-- البحث + الفلتر الذكي -->
+      <!-- البحث + الفلتر -->
       <section class="search-section">
         <div class="search-box">
-          <input id="searchInput" class="field search-field" type="text" placeholder="ابحث عن منتجك المفضل..." />
+          <input
+            id="searchInput"
+            class="field search-field"
+            type="text"
+            placeholder="ابحث عن منتجك المفضل..."
+          />
           <span class="search-icon">⌕</span>
         </div>
 
@@ -99,20 +110,21 @@
         </div>
       </section>
 
-      <!-- الأكثر طلبًا -->
+      <!-- الأكثر طلباً -->
       <section class="featured-section">
         <div class="section-title-row">
           <h2>⭐ الأكثر طلبًا وتميزًا</h2>
         </div>
-        <div id="featuredGrid" class="cards-list featured-list"></div>
+        <div id="featuredGrid" class="cards-list compact-list"></div>
       </section>
 
-      <!-- القائمة -->
+      <!-- القائمة الرئيسية -->
       <section class="menu-section">
         <div class="section-title-row">
           <h2>قائمة الطعام</h2>
           <p id="menuCounter">جاري تحميل الوجبات...</p>
         </div>
+
         <div id="menuGroups" class="menu-groups"></div>
       </section>
     </div>
@@ -147,7 +159,26 @@
     </div>
   </div>
 
-  <!-- شريط حقوق الملكية -->
+  <!-- أزرار التواصل الثابتة -->
+  <div class="floating-socials">
+    <a id="whatsappFloatingBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="واتساب">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="واتساب" />
+    </a>
+
+    <a id="instagramFloatingBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="إنستغرام">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="إنستغرام" />
+    </a>
+
+    <a id="facebookFloatingBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="فيسبوك">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="فيسبوك" />
+    </a>
+
+    <a id="mapsFloatingBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="خرائط جوجل">
+      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="خرائط" />
+    </a>
+  </div>
+
+  <!-- حقوق الملكية -->
   <footer class="footer">
     <div class="container">
       جميع الحقوق محفوظة KeFo.tech
