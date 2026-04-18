@@ -3,27 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- عنوان الصفحة -->
   <title>فطاير ع طاير | القائمة الرقمية</title>
-
-  <!-- وصف لمحركات البحث -->
-  <meta
-    name="description"
-    content="واجهة منيو مطعم حديثة شبيهة بأسلوب مواقع المنيو الاحترافية، مع فئات، عروض، منتجات مميزة، وتفاصيل طلب عبر واتساب."
-  />
-
+  <meta name="description" content="واجهة منيو مطعم حديثة مع فئات وبحث وبطاقات وجبات وطلب واتساب." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- =========================================
-       الهيدر العلوي
-       شعار + اسم المطعم
-  ========================================== -->
+  <!-- زر القائمة الجانبية -->
+  <button class="menu-toggle" id="menuToggleBtn" aria-label="فتح القائمة">☰</button>
+
+  <!-- القائمة الجانبية -->
+  <aside class="side-drawer" id="sideDrawer">
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="drawer-panel">
+      <button class="drawer-close" id="drawerCloseBtn">×</button>
+
+      <div class="drawer-header">
+        <img id="drawerLogo" class="drawer-logo" src="https://images.unsplash.com/photo-1541544181051-e46607c3a54b?q=80&w=600&auto=format&fit=crop" alt="شعار المطعم" />
+        <h2 id="drawerRestaurantName">فطاير ع طاير</h2>
+      </div>
+
+      <section class="drawer-section">
+        <h3>من نحن</h3>
+        <p id="aboutText">
+          نقدم لكم أشهى المأكولات المحضرة بعناية من أجود المكونات الطازجة، ونسعى دائمًا لتقديم تجربة طعام لا تُنسى.
+        </p>
+      </section>
+
+      <section class="drawer-section">
+        <h3>التواصل والعنوان</h3>
+
+        <a id="drawerMapsBtn" class="drawer-link" href="#" target="_blank" rel="noopener">
+          📍 <span id="displayAddress">الموقع على خرائط جوجل</span>
+        </a>
+
+        <a id="drawerWhatsappBtn" class="drawer-link" href="#" target="_blank" rel="noopener">
+          📞 <span id="displayPhone">+963983906667</span>
+        </a>
+
+        <a id="instagramBtn" class="drawer-link" href="#" target="_blank" rel="noopener">
+          📸 إنستغرام
+        </a>
+
+        <a id="facebookBtn" class="drawer-link" href="#" target="_blank" rel="noopener">
+          📘 فيسبوك
+        </a>
+      </section>
+
+      <div class="drawer-footer">
+        جميع الحقوق محفوظة KeFo.tech
+      </div>
+    </div>
+  </aside>
+
+  <!-- رأس الصفحة -->
   <header class="topbar">
     <div class="container topbar-inner">
-      <div class="brand brand-centered">
+      <div class="brand">
         <img
           id="restaurantLogo"
           class="brand-logo"
@@ -38,175 +74,51 @@
     </div>
   </header>
 
-  <main>
-    <!-- =========================================
-         القسم الرئيسي
-         فئات + بحث + بنرات
-    ========================================== -->
-    <section class="hero">
-      <div class="container">
-        <div class="hero-card">
-          <div class="hero-head simple-hero">
-            <div class="hero-content center-text">
-              <span class="hero-badge">جرّبونا لتعرفونا</span>
-              <h2 class="hero-title" id="heroTitle">أشهى المعجنات والبيتزا</h2>
-              <p class="hero-desc" id="heroDescription">
-                تصفح قائمة الطعام بسرعة، شاهد الوجبات المميزة، وافتح تفاصيل أي وجبة للطلب المباشر عبر واتساب.
-              </p>
-            </div>
-          </div>
+  <main class="page-content">
+    <div class="container">
 
-          <!-- أزرار الفئات -->
-          <div class="categories-title">الفئات</div>
-          <div id="quickCategories" class="quick-categories">
-            <button class="category-chip active" data-category="all">عرض الكل</button>
-          </div>
-
-          <!-- حقل البحث -->
-          <div class="search-wrap">
-            <input
-              id="searchInput"
-              class="field"
-              type="text"
-              placeholder="ابحث عن منتجك المفضل..."
-            />
-          </div>
-
-          <!-- بنرات العروض -->
-          <div class="banner-grid" id="bannerGrid">
-            <div class="banner-card">
-              <img
-                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop"
-                alt="بانر 1"
-              />
-            </div>
-            <div class="banner-card">
-              <img
-                src="https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1200&auto=format&fit=crop"
-                alt="بانر 2"
-              />
-            </div>
-          </div>
+      <!-- الفئات -->
+      <section class="categories-section">
+        <div id="quickCategories" class="quick-categories">
+          <button class="category-chip active" data-category="all">عرض الكل</button>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- =========================================
-         قسم الأكثر طلبًا وتميزًا
-    ========================================== -->
-    <section class="featured-section">
-      <div class="container">
-        <div class="section-head centered-head">
-          <div>
-            <h2>الأكثر طلبًا وتميزًا</h2>
-            <p>منتجات مختارة لعرضها في الواجهة أولًا</p>
-          </div>
+      <!-- البحث + الفلتر الذكي -->
+      <section class="search-section">
+        <div class="search-box">
+          <input id="searchInput" class="field search-field" type="text" placeholder="ابحث عن منتجك المفضل..." />
+          <span class="search-icon">⌕</span>
         </div>
 
-        <div id="featuredGrid" class="featured-grid"></div>
-      </div>
-    </section>
-
-    <!-- =========================================
-         قسم قائمة الطعام كاملة
-    ========================================== -->
-    <section class="menu-section">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>قائمة الطعام</h2>
-            <p id="menuCounter">جاري تحميل الوجبات...</p>
-          </div>
-
-          <select id="sortFilter" class="select small-select">
-            <option value="default">الترتيب الافتراضي</option>
-            <option value="price-asc">السعر: من الأقل إلى الأعلى</option>
-            <option value="price-desc">السعر: من الأعلى إلى الأقل</option>
-            <option value="name-asc">الاسم: أ-ي</option>
-          </select>
+        <div class="smart-filters">
+          <button class="smart-filter active" data-sort="default">الكل</button>
+          <button class="smart-filter" data-sort="price-asc">الأرخص</button>
+          <button class="smart-filter" data-sort="price-desc">الأغلى</button>
+          <button class="smart-filter" data-sort="name-asc">أبجدي</button>
         </div>
+      </section>
 
+      <!-- الأكثر طلبًا -->
+      <section class="featured-section">
+        <div class="section-title-row">
+          <h2>⭐ الأكثر طلبًا وتميزًا</h2>
+        </div>
+        <div id="featuredGrid" class="cards-list featured-list"></div>
+      </section>
+
+      <!-- القائمة -->
+      <section class="menu-section">
+        <div class="section-title-row">
+          <h2>قائمة الطعام</h2>
+          <p id="menuCounter">جاري تحميل الوجبات...</p>
+        </div>
         <div id="menuGroups" class="menu-groups"></div>
-      </div>
-    </section>
-
-    <!-- =========================================
-         قسم من نحن + التواصل
-    ========================================== -->
-    <section class="about-section">
-      <div class="container">
-        <div class="about-card">
-          <div class="about-grid">
-            <div class="about-brand">
-              <img
-                id="footerLogo"
-                class="about-logo"
-                src="https://images.unsplash.com/photo-1541544181051-e46607c3a54b?q=80&w=600&auto=format&fit=crop"
-                alt="شعار المطعم"
-              />
-              <h3 id="footerRestaurantName">فطاير ع طاير</h3>
-            </div>
-
-            <div>
-              <h4>من نحن</h4>
-              <p id="aboutText">
-                نقدم لكم أشهى المأكولات المحضرة بعناية من أجود المكونات الطازجة، ونسعى دائمًا لتقديم تجربة طعام لذيذة وسريعة.
-              </p>
-            </div>
-
-            <div>
-              <h4>التواصل والعنوان</h4>
-              <div class="contact-list">
-                <a id="displayPhoneLink" class="contact-row" href="#" target="_blank" rel="noopener">
-                  <span>واتساب:</span>
-                  <strong id="displayPhone">+963983906667</strong>
-                </a>
-
-                <a id="mapsInlineBtn" class="contact-row" href="#" target="_blank" rel="noopener">
-                  <span>العنوان:</span>
-                  <strong id="displayAddress">الموقع على خرائط جوجل</strong>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
 
-  <!-- =========================================
-       أزرار التواصل الثابتة
-  ========================================== -->
-  <div class="floating-socials">
-    <a id="whatsappBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="واتساب">
-      <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="واتساب" />
-    </a>
-
-    <a id="instagramBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="إنستغرام">
-      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="إنستغرام" />
-    </a>
-
-    <a id="facebookBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="فيسبوك">
-      <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="فيسبوك" />
-    </a>
-
-    <a id="mapsBtn" class="social-mini" href="#" target="_blank" rel="noopener" aria-label="خرائط جوجل">
-      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="خرائط" />
-    </a>
-  </div>
-
-  <!-- =========================================
-       حقوق الملكية الثابتة
-  ========================================== -->
-  <footer class="footer">
-    <div class="container">
-      جميع الحقوق محفوظة KeFo.tech
-    </div>
-  </footer>
-
-  <!-- =========================================
-       نافذة تفاصيل الوجبة
-  ========================================== -->
+  <!-- نافذة تفاصيل الوجبة -->
   <div class="modal" id="mealModal">
     <div class="overlay" data-close="mealModal"></div>
 
@@ -234,6 +146,13 @@
       </div>
     </div>
   </div>
+
+  <!-- شريط حقوق الملكية -->
+  <footer class="footer">
+    <div class="container">
+      جميع الحقوق محفوظة KeFo.tech
+    </div>
+  </footer>
 
   <script type="module" src="app.js"></script>
 </body>
