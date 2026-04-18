@@ -62,7 +62,6 @@ const els = {
   restaurantSubtitleInput: document.getElementById("restaurantSubtitleInput"),
   aboutTextInput: document.getElementById("aboutTextInput"),
   addressTextInput: document.getElementById("addressTextInput"),
-  logoFileInput: document.getElementById("logoFileInput"),
   logoUrlInput: document.getElementById("logoUrlInput"),
   uploadLogoBtn: document.getElementById("uploadLogoBtn"),
   saveSettingsBtn: document.getElementById("saveSettingsBtn"),
@@ -79,7 +78,6 @@ const els = {
   mealIngredientsInput: document.getElementById("mealIngredientsInput"),
   mealActionTypeInput: document.getElementById("mealActionTypeInput"),
   mealFeaturedInput: document.getElementById("mealFeaturedInput"),
-  mealImageFileInput: document.getElementById("mealImageFileInput"),
   mealDescriptionInput: document.getElementById("mealDescriptionInput"),
   mealImageUrlInput: document.getElementById("mealImageUrlInput"),
   uploadMealImageBtn: document.getElementById("uploadMealImageBtn"),
@@ -108,7 +106,9 @@ function showStatus(message, isError = false) {
 
   els.statusBox.textContent = message;
   els.statusBox.classList.remove("error");
+
   if (isError) els.statusBox.classList.add("error");
+
   els.statusBox.style.display = "block";
 
   clearTimeout(showStatus.timer);
@@ -241,7 +241,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 /* =========================================================
-   9) رفع شعار المطعم عبر Cloudinary
+   9) رفع الشعار عبر Cloudinary
 ========================================================= */
 els.uploadLogoBtn?.addEventListener("click", () => {
   openCloudinaryWidget({
@@ -426,8 +426,6 @@ function resetMealForm() {
   els.mealFeaturedInput.value = "true";
   els.mealDescriptionInput.value = "";
   els.mealImageUrlInput.value = "";
-  if (els.mealImageFileInput) els.mealImageFileInput.value = "";
-
   delete els.addMealBtn.dataset.editingId;
   els.addMealBtn.textContent = "إضافة الوجبة";
 }
@@ -449,9 +447,7 @@ els.addMealBtn?.addEventListener("click", async () => {
     name: els.mealNameInput.value.trim(),
     categoryId: els.mealCategoryInput.value,
     price: Number(els.mealPriceInput.value || 0),
-    oldPrice: els.mealOldPriceInput.value
-      ? Number(els.mealOldPriceInput.value)
-      : null,
+    oldPrice: els.mealOldPriceInput.value ? Number(els.mealOldPriceInput.value) : null,
     ingredients: safeArrayFromCSV(els.mealIngredientsInput.value),
     actionType: els.mealActionTypeInput.value,
     featured: els.mealFeaturedInput.value === "true",
@@ -529,18 +525,14 @@ async function loadSettings() {
 }
 
 async function loadCategories() {
-  const snap = await getDocs(
-    query(collection(db, "categories"), orderBy("order", "asc"))
-  );
+  const snap = await getDocs(query(collection(db, "categories"), orderBy("order", "asc")));
   categories = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
   renderCategorySelect();
   renderCategoriesList();
 }
 
 async function loadMeals() {
-  const snap = await getDocs(
-    query(collection(db, "meals"), orderBy("createdAt", "desc"))
-  );
+  const snap = await getDocs(query(collection(db, "meals"), orderBy("createdAt", "desc")));
   meals = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
   renderMealsList();
 }
