@@ -12,12 +12,14 @@
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
+
 body{
   margin:0;
   font-family:"Tahoma","Arial",sans-serif;
   background:linear-gradient(180deg,#f8f8fb 0%,#eef1f6 100%);
   color:var(--text);
 }
+
 button,input,select,textarea{font-family:inherit}
 .hidden{display:none!important}
 
@@ -157,9 +159,11 @@ button,input,select,textarea{font-family:inherit}
   display:grid;
   gap:14px;
 }
+
 .form-grid.two-col{
   grid-template-columns:repeat(2,minmax(0,1fr));
 }
+
 .full-col{grid-column:1 / -1}
 
 label{
@@ -250,6 +254,7 @@ label{
 
 .item-meta h5{margin:0 0 6px;font-size:1rem}
 .item-meta p{margin:0;color:var(--muted);line-height:1.7;font-size:.9rem}
+
 .item-actions{
   display:flex;
   gap:8px;
