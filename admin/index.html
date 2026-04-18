@@ -36,6 +36,7 @@
           <h2>تحكم كامل بالمطعم</h2>
           <p>يمكنك إضافة وتعديل وحذف جميع بيانات المطعم من هنا.</p>
         </div>
+
         <div class="auth-box">
           <input id="adminEmail" class="field mini-field" type="email" placeholder="البريد الإلكتروني" />
           <input id="adminPassword" class="field mini-field" type="password" placeholder="كلمة المرور" />
@@ -47,10 +48,11 @@
       <div id="statusBox" class="status"></div>
 
       <div id="adminContent" class="hidden">
+        <!-- إعدادات المطعم -->
         <section id="settingsSection" class="panel-section active-section">
           <div class="section-head">
             <h3>إعدادات المطعم الأساسية</h3>
-            <p>الشعار، الاسم، الوصف، وصورة الغلاف.</p>
+            <p>الشعار، الاسم، الوصف، وصورة المطعم الأساسية.</p>
           </div>
 
           <div class="panel-card form-grid two-col">
@@ -58,34 +60,35 @@
               <label>اسم المطعم</label>
               <input id="restaurantNameInput" class="field" type="text" placeholder="مثال: فطاير ع طاير" />
             </div>
+
             <div>
               <label>الوصف المختصر</label>
               <input id="restaurantSubtitleInput" class="field" type="text" placeholder="مثال: للمعجنات والبيتزا" />
             </div>
-            <div>
+
+            <div class="full-col">
               <label>نبذة عن المطعم</label>
               <textarea id="aboutTextInput" class="field textarea" placeholder="اكتب نبذة قصيرة عن المطعم"></textarea>
             </div>
-            <div>
+
+            <div class="full-col">
               <label>نص العنوان</label>
               <input id="addressTextInput" class="field" type="text" placeholder="مثال: سوريا - حلب - الموقع على الخرائط" />
             </div>
-            <div>
-              <label>رفع شعار المطعم</label>
-              <input id="logoFileInput" class="field" type="file" accept="image/*" />
-            </div>
-            <div>
-              <label>رابط الشعار الحالي</label>
-              <input id="logoUrlInput" class="field" type="url" placeholder="يملأ تلقائيًا بعد الرفع" />
+
+            <div class="full-col">
+              <label>رابط الشعار</label>
+              <input id="logoUrlInput" class="field" type="url" placeholder="سيُملأ تلقائيًا بعد رفع الشعار" />
             </div>
           </div>
 
           <div class="actions-row">
-            <button id="uploadLogoBtn" class="btn btn-secondary">رفع الشعار</button>
+            <button id="uploadLogoBtn" class="btn btn-secondary">اختيار ورفع الشعار</button>
             <button id="saveSettingsBtn" class="btn btn-primary">حفظ الإعدادات</button>
           </div>
         </section>
 
+        <!-- الأقسام -->
         <section id="categoriesSection" class="panel-section">
           <div class="section-head">
             <h3>أقسام المطعم</h3>
@@ -97,6 +100,7 @@
               <label>اسم القسم</label>
               <input id="categoryNameInput" class="field" type="text" placeholder="مثال: بيتزا" />
             </div>
+
             <div>
               <label>ترتيب القسم</label>
               <input id="categoryOrderInput" class="field" type="number" placeholder="مثال: 1" />
@@ -113,6 +117,7 @@
           </div>
         </section>
 
+        <!-- الوجبات -->
         <section id="mealsSection" class="panel-section">
           <div class="section-head">
             <h3>إدارة الوجبات</h3>
@@ -124,22 +129,27 @@
               <label>اسم الوجبة</label>
               <input id="mealNameInput" class="field" type="text" placeholder="مثال: بيتزا خضار" />
             </div>
+
             <div>
               <label>القسم</label>
               <select id="mealCategoryInput" class="field"></select>
             </div>
+
             <div>
               <label>السعر الحالي</label>
               <input id="mealPriceInput" class="field" type="number" step="0.01" placeholder="مثال: 199" />
             </div>
+
             <div>
               <label>السعر القديم (اختياري)</label>
               <input id="mealOldPriceInput" class="field" type="number" step="0.01" placeholder="مثال: 250" />
             </div>
+
             <div>
               <label>المكونات</label>
               <input id="mealIngredientsInput" class="field" type="text" placeholder="مثال: جبنة, زيتون, فليفلة" />
             </div>
+
             <div>
               <label>إجراء البطاقة</label>
               <select id="mealActionTypeInput" class="field">
@@ -147,6 +157,7 @@
                 <option value="select">زر اختر</option>
               </select>
             </div>
+
             <div>
               <label>تمييزها ضمن الأكثر طلبًا</label>
               <select id="mealFeaturedInput" class="field">
@@ -154,22 +165,20 @@
                 <option value="false">لا</option>
               </select>
             </div>
-            <div>
-              <label>رفع صورة الوجبة</label>
-              <input id="mealImageFileInput" class="field" type="file" accept="image/*" />
-            </div>
+
             <div class="full-col">
               <label>تفاصيل الوجبة</label>
               <textarea id="mealDescriptionInput" class="field textarea" placeholder="مثال: وجبة شاورما إكسترا + بطاطا + مخللات"></textarea>
             </div>
+
             <div class="full-col">
               <label>رابط صورة الوجبة</label>
-              <input id="mealImageUrlInput" class="field" type="url" placeholder="يملأ تلقائيًا بعد رفع الصورة" />
+              <input id="mealImageUrlInput" class="field" type="url" placeholder="سيُملأ تلقائيًا بعد رفع الصورة" />
             </div>
           </div>
 
           <div class="actions-row">
-            <button id="uploadMealImageBtn" class="btn btn-secondary">رفع صورة الوجبة</button>
+            <button id="uploadMealImageBtn" class="btn btn-secondary">اختيار ورفع صورة الوجبة</button>
             <button id="addMealBtn" class="btn btn-primary">إضافة الوجبة</button>
           </div>
 
@@ -179,6 +188,7 @@
           </div>
         </section>
 
+        <!-- التواصل -->
         <section id="contactSection" class="panel-section">
           <div class="section-head">
             <h3>التواصل وموقع المطعم</h3>
@@ -190,14 +200,17 @@
               <label>رقم واتساب / الهاتف</label>
               <input id="phoneInput" class="field" type="text" placeholder="مثال: 0983906667" />
             </div>
+
             <div>
               <label>رابط إنستغرام</label>
               <input id="instagramInput" class="field" type="url" placeholder="https://instagram.com/..." />
             </div>
+
             <div>
               <label>رابط فيسبوك</label>
               <input id="facebookInput" class="field" type="url" placeholder="https://facebook.com/..." />
             </div>
+
             <div>
               <label>رابط الموقع على الخريطة</label>
               <input id="mapsInput" class="field" type="url" placeholder="https://maps.google.com/..." />
@@ -212,7 +225,7 @@
     </main>
   </div>
 
-  <script type="module" src="app.js"></script>
   <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
