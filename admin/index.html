@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة إدارة المطعم | KeFo.tech</title>
+  <meta name="description" content="لوحة إدارة كاملة للمطعم لإدارة الشعار والاسم والأقسام والوجبات ووسائل التواصل." />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <div class="brand-box">
+        <div class="brand-mark">K</div>
+        <div>
+          <h1>لوحة الإدارة</h1>
+          <p>إدارة كاملة للمطعم</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-target="settingsSection">إعدادات المطعم</button>
+        <button class="nav-btn" data-target="categoriesSection">الأقسام</button>
+        <button class="nav-btn" data-target="mealsSection">الوجبات</button>
+        <button class="nav-btn" data-target="contactSection">التواصل والخريطة</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        جميع الحقوق محفوظة KeFo.tech
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="topbar">
+        <div>
+          <h2>تحكم كامل بالمطعم</h2>
+          <p>يمكنك إضافة وتعديل وحذف جميع بيانات المطعم من هنا.</p>
+        </div>
+        <div class="auth-box">
+          <input id="adminEmail" class="field mini-field" type="email" placeholder="البريد الإلكتروني" />
+          <input id="adminPassword" class="field mini-field" type="password" placeholder="كلمة المرور" />
+          <button id="loginBtn" class="btn btn-primary">دخول</button>
+          <button id="logoutBtn" class="btn btn-secondary hidden">تسجيل خروج</button>
+        </div>
+      </header>
+
+      <div id="statusBox" class="status"></div>
+
+      <div id="adminContent" class="hidden">
+        <section id="settingsSection" class="panel-section active-section">
+          <div class="section-head">
+            <h3>إعدادات المطعم الأساسية</h3>
+            <p>الشعار، الاسم، الوصف، وصورة الغلاف.</p>
+          </div>
+
+          <div class="panel-card form-grid two-col">
+            <div>
+              <label>اسم المطعم</label>
+              <input id="restaurantNameInput" class="field" type="text" placeholder="مثال: فطاير ع طاير" />
+            </div>
+            <div>
+              <label>الوصف المختصر</label>
+              <input id="restaurantSubtitleInput" class="field" type="text" placeholder="مثال: للمعجنات والبيتزا" />
+            </div>
+            <div>
+              <label>نبذة عن المطعم</label>
+              <textarea id="aboutTextInput" class="field textarea" placeholder="اكتب نبذة قصيرة عن المطعم"></textarea>
+            </div>
+            <div>
+              <label>نص العنوان</label>
+              <input id="addressTextInput" class="field" type="text" placeholder="مثال: سوريا - حلب - الموقع على الخرائط" />
+            </div>
+            <div>
+              <label>رفع شعار المطعم</label>
+              <input id="logoFileInput" class="field" type="file" accept="image/*" />
+            </div>
+            <div>
+              <label>رابط الشعار الحالي</label>
+              <input id="logoUrlInput" class="field" type="url" placeholder="يملأ تلقائيًا بعد الرفع" />
+            </div>
+          </div>
+
+          <div class="actions-row">
+            <button id="uploadLogoBtn" class="btn btn-secondary">رفع الشعار</button>
+            <button id="saveSettingsBtn" class="btn btn-primary">حفظ الإعدادات</button>
+          </div>
+        </section>
+
+        <section id="categoriesSection" class="panel-section">
+          <div class="section-head">
+            <h3>أقسام المطعم</h3>
+            <p>أضف الأقسام حسب اختصاص المطعم، مثل: مشاوي، بيتزا، حلويات.</p>
+          </div>
+
+          <div class="panel-card form-grid two-col">
+            <div>
+              <label>اسم القسم</label>
+              <input id="categoryNameInput" class="field" type="text" placeholder="مثال: بيتزا" />
+            </div>
+            <div>
+              <label>ترتيب القسم</label>
+              <input id="categoryOrderInput" class="field" type="number" placeholder="مثال: 1" />
+            </div>
+          </div>
+
+          <div class="actions-row">
+            <button id="addCategoryBtn" class="btn btn-primary">إضافة القسم</button>
+          </div>
+
+          <div class="panel-card">
+            <h4>الأقسام الحالية</h4>
+            <div id="categoriesList" class="list-wrap"></div>
+          </div>
+        </section>
+
+        <section id="mealsSection" class="panel-section">
+          <div class="section-head">
+            <h3>إدارة الوجبات</h3>
+            <p>رفع صورة الوجبة، الاسم، التفاصيل، المكونات، والسعر.</p>
+          </div>
+
+          <div class="panel-card form-grid two-col">
+            <div>
+              <label>اسم الوجبة</label>
+              <input id="mealNameInput" class="field" type="text" placeholder="مثال: بيتزا خضار" />
+            </div>
+            <div>
+              <label>القسم</label>
+              <select id="mealCategoryInput" class="field"></select>
+            </div>
+            <div>
+              <label>السعر الحالي</label>
+              <input id="mealPriceInput" class="field" type="number" step="0.01" placeholder="مثال: 199" />
+            </div>
+            <div>
+              <label>السعر القديم (اختياري)</label>
+              <input id="mealOldPriceInput" class="field" type="number" step="0.01" placeholder="مثال: 250" />
+            </div>
+            <div>
+              <label>المكونات</label>
+              <input id="mealIngredientsInput" class="field" type="text" placeholder="مثال: جبنة, زيتون, فليفلة" />
+            </div>
+            <div>
+              <label>إجراء البطاقة</label>
+              <select id="mealActionTypeInput" class="field">
+                <option value="counter">زر + والعدد</option>
+                <option value="select">زر اختر</option>
+              </select>
+            </div>
+            <div>
+              <label>تمييزها ضمن الأكثر طلبًا</label>
+              <select id="mealFeaturedInput" class="field">
+                <option value="true">نعم</option>
+                <option value="false">لا</option>
+              </select>
+            </div>
+            <div>
+              <label>رفع صورة الوجبة</label>
+              <input id="mealImageFileInput" class="field" type="file" accept="image/*" />
+            </div>
+            <div class="full-col">
+              <label>تفاصيل الوجبة</label>
+              <textarea id="mealDescriptionInput" class="field textarea" placeholder="مثال: وجبة شاورما إكسترا + بطاطا + مخللات"></textarea>
+            </div>
+            <div class="full-col">
+              <label>رابط صورة الوجبة</label>
+              <input id="mealImageUrlInput" class="field" type="url" placeholder="يملأ تلقائيًا بعد رفع الصورة" />
+            </div>
+          </div>
+
+          <div class="actions-row">
+            <button id="uploadMealImageBtn" class="btn btn-secondary">رفع صورة الوجبة</button>
+            <button id="addMealBtn" class="btn btn-primary">إضافة الوجبة</button>
+          </div>
+
+          <div class="panel-card">
+            <h4>الوجبات الحالية</h4>
+            <div id="mealsList" class="list-wrap"></div>
+          </div>
+        </section>
+
+        <section id="contactSection" class="panel-section">
+          <div class="section-head">
+            <h3>التواصل وموقع المطعم</h3>
+            <p>عدّل روابط واتساب وإنستغرام وفيسبوك ورابط الخرائط.</p>
+          </div>
+
+          <div class="panel-card form-grid two-col">
+            <div>
+              <label>رقم واتساب / الهاتف</label>
+              <input id="phoneInput" class="field" type="text" placeholder="مثال: 0983906667" />
+            </div>
+            <div>
+              <label>رابط إنستغرام</label>
+              <input id="instagramInput" class="field" type="url" placeholder="https://instagram.com/..." />
+            </div>
+            <div>
+              <label>رابط فيسبوك</label>
+              <input id="facebookInput" class="field" type="url" placeholder="https://facebook.com/..." />
+            </div>
+            <div>
+              <label>رابط الموقع على الخريطة</label>
+              <input id="mapsInput" class="field" type="url" placeholder="https://maps.google.com/..." />
+            </div>
+          </div>
+
+          <div class="actions-row">
+            <button id="saveContactBtn" class="btn btn-primary">حفظ بيانات التواصل</button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
