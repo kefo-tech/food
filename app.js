@@ -10,7 +10,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* =========================================================
-   1) حماية .النسخ وزر اليمين
+   1) حماية النسخ وزر اليمين
 ========================================================= */
 (function activateProtection() {
   document.addEventListener("contextmenu", (e) => {
@@ -38,7 +38,6 @@ import {
 
 /* =========================================================
    2) Firebase
-   ضع بيانات مشروعك هنا
 ========================================================= */
 const firebaseConfig = {
   apiKey: "PUT_YOUR_API_KEY",
@@ -53,7 +52,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 /* =========================================================
-   3) عناصر الصفحة
+   3) العناصر
 ========================================================= */
 const els = {
   restaurantName: document.getElementById("restaurantName"),
@@ -68,8 +67,13 @@ const els = {
 
   drawerWhatsappBtn: document.getElementById("drawerWhatsappBtn"),
   drawerMapsBtn: document.getElementById("drawerMapsBtn"),
-  instagramBtn: document.getElementById("instagramBtn"),
-  facebookBtn: document.getElementById("facebookBtn"),
+  instagramDrawerBtn: document.getElementById("instagramDrawerBtn"),
+  facebookDrawerBtn: document.getElementById("facebookDrawerBtn"),
+
+  whatsappFloatingBtn: document.getElementById("whatsappFloatingBtn"),
+  instagramFloatingBtn: document.getElementById("instagramFloatingBtn"),
+  facebookFloatingBtn: document.getElementById("facebookFloatingBtn"),
+  mapsFloatingBtn: document.getElementById("mapsFloatingBtn"),
 
   searchInput: document.getElementById("searchInput"),
   quickCategories: document.getElementById("quickCategories"),
@@ -93,9 +97,6 @@ const els = {
   drawerCloseBtn: document.getElementById("drawerCloseBtn")
 };
 
-/* =========================================================
-   4) الحالة العامة
-========================================================= */
 let settings = null;
 let categories = [];
 let meals = [];
@@ -103,7 +104,7 @@ let activeCategory = "all";
 let currentSort = "default";
 
 /* =========================================================
-   5) بيانات احتياطية
+   4) بيانات احتياطية
 ========================================================= */
 const FALLBACK_SETTINGS = {
   restaurantName: "فطاير ع طاير",
@@ -163,7 +164,7 @@ const FALLBACK_MEALS = [
 ];
 
 /* =========================================================
-   6) أدوات مساعدة
+   5) أدوات مساعدة
 ========================================================= */
 function openPanel(id) {
   const panel = document.getElementById(id);
@@ -228,7 +229,7 @@ function buildWhatsappMessage(meal) {
 }
 
 /* =========================================================
-   7) القائمة الجانبية
+   6) القائمة الجانبية
 ========================================================= */
 function openDrawer() {
   els.sideDrawer.classList.add("show");
@@ -245,7 +246,7 @@ els.drawerOverlay?.addEventListener("click", closeDrawer);
 els.drawerCloseBtn?.addEventListener("click", closeDrawer);
 
 /* =========================================================
-   8) تطبيق إعدادات المطعم
+   7) إعدادات الواجهة
 ========================================================= */
 function applySettingsToUI(data) {
   const s = data || FALLBACK_SETTINGS;
@@ -263,15 +264,21 @@ function applySettingsToUI(data) {
 
   if (els.displayPhone) els.displayPhone.textContent = normalizedPhone;
   if (els.drawerWhatsappBtn) els.drawerWhatsappBtn.href = whatsappLink;
+  if (els.whatsappFloatingBtn) els.whatsappFloatingBtn.href = whatsappLink;
+
   if (els.drawerMapsBtn) els.drawerMapsBtn.href = s.maps || "#";
+  if (els.mapsFloatingBtn) els.mapsFloatingBtn.href = s.maps || "#";
+
   if (els.displayAddress) els.displayAddress.textContent = s.addressText || "الموقع على خرائط جوجل";
 
-  if (els.instagramBtn) els.instagramBtn.href = s.instagram || "#";
-  if (els.facebookBtn) els.facebookBtn.href = s.facebook || "#";
+  if (els.instagramDrawerBtn) els.instagramDrawerBtn.href = s.instagram || "#";
+  if (els.facebookDrawerBtn) els.facebookDrawerBtn.href = s.facebook || "#";
+  if (els.instagramFloatingBtn) els.instagramFloatingBtn.href = s.instagram || "#";
+  if (els.facebookFloatingBtn) els.facebookFloatingBtn.href = s.facebook || "#";
 }
 
 /* =========================================================
-   9) الفئات
+   8) الفئات
 ========================================================= */
 function renderQuickCategories() {
   if (!els.quickCategories) return;
@@ -299,7 +306,7 @@ function bindCategoryEvents() {
 }
 
 /* =========================================================
-   10) الفلتر الذكي
+   9) الفلتر الذكي
 ========================================================= */
 function bindSmartFilterEvents() {
   document.querySelectorAll(".smart-filter").forEach(btn => {
@@ -314,7 +321,7 @@ function bindSmartFilterEvents() {
 }
 
 /* =========================================================
-   11) بناء بطاقة الوجبة
+   10) بطاقة الوجبة
 ========================================================= */
 function buildActionButton(meal) {
   if (meal.actionType === "select") {
@@ -356,7 +363,7 @@ function buildFoodCard(meal) {
 }
 
 /* =========================================================
-   12) فلترة الوجبات
+   11) الفلترة
 ========================================================= */
 function getFilteredMeals() {
   const search = els.searchInput?.value.trim().toLowerCase() || "";
@@ -385,7 +392,7 @@ function getFilteredMeals() {
 }
 
 /* =========================================================
-   13) الأكثر طلبًا
+   12) الأكثر طلباً
 ========================================================= */
 function renderFeaturedMeals() {
   if (!els.featuredGrid) return;
@@ -403,7 +410,7 @@ function renderFeaturedMeals() {
 }
 
 /* =========================================================
-   14) القائمة الرئيسية
+   13) القائمة الرئيسية
 ========================================================= */
 function renderMeals() {
   if (!els.menuGroups || !els.menuCounter) return;
@@ -443,7 +450,7 @@ function renderMeals() {
 }
 
 /* =========================================================
-   15) نافذة تفاصيل الوجبة
+   14) نافذة التفاصيل
 ========================================================= */
 function openMealModal(meal) {
   els.modalImage.src = meal.imageUrl;
@@ -470,6 +477,9 @@ function openMealModal(meal) {
 
 function bindMealEvents() {
   document.addEventListener("click", (e) => {
+    const imageArea = e.target.closest(".food-card-image, .food-card");
+    if (!imageArea) return;
+
     const card = e.target.closest(".food-card");
     if (!card) return;
 
@@ -479,7 +489,7 @@ function bindMealEvents() {
 }
 
 /* =========================================================
-   16) جلب البيانات
+   15) جلب البيانات
 ========================================================= */
 async function loadSettings() {
   try {
@@ -524,7 +534,7 @@ async function init() {
 }
 
 /* =========================================================
-   17) البحث
+   16) البحث
 ========================================================= */
 els.searchInput?.addEventListener("input", () => {
   renderFeaturedMeals();
@@ -532,7 +542,7 @@ els.searchInput?.addEventListener("input", () => {
 });
 
 /* =========================================================
-   18) بدء التشغيل
+   17) بدء التشغيل
 ========================================================= */
 bindCategoryEvents();
 bindSmartFilterEvents();
